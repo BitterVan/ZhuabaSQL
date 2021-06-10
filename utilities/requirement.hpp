@@ -10,9 +10,7 @@ class Requirement {
 		Operator operator_type;
 	
 	public:
-		Requirement(const string&, const string&, Operator);
-		Requirement(const string&, int, Operator);
-		Requirement(const string&, double, Operator);
+		Requirement(const string&, const Item&, Operator);
 		Requirement(const Requirement&);
 		~Requirement();
 

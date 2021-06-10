@@ -124,3 +124,41 @@ bool Item::operator>(const Item& src_item) const {
 	}
 	return ret;
 }
+
+int Item::bitLength() const {
+	int ret = 0;
+	switch (item_type)
+	{
+	case Type::INT:
+		ret = sizeof(int);
+		break;
+	case Type::DOUBLE:
+		ret = sizeof(double);
+		break;
+	case Type::STRING:
+		ret = string_val.length();
+		break;
+	default:
+		break;
+	}
+	return ret;
+}
+
+BitStream Item::toBit() const {
+	BitStream ret(bitLength());
+	switch (item_type)
+	{
+	case Type::INT:
+		memcpy(ret.begin(), (char*)&int_val, sizeof(int));
+		break;
+	case Type::DOUBLE:
+		memcpy(ret.begin(), (char*)&double_val, sizeof(double));
+		break;
+	case Type::STRING:
+		memcpy(ret.begin(), string_val.c_str(), string_val.length());
+		break;
+	default:
+		break;
+	}
+	return ret;
+}

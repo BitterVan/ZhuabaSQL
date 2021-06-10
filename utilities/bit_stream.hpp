@@ -8,8 +8,9 @@ class BitStream {
 		int capacity;
 	
 	public:
-		BitStream();
+		BitStream(int);
 		BitStream(const BitStream&);
 		~BitStream();
+		BitStream() = delete;
 		char* begin() const;
 };

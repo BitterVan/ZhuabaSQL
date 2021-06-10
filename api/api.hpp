@@ -15,10 +15,6 @@ class API {
 		API(CatalogManager&, RecordManager&);
 		~API();
 
-		// @brief: 获取容器迭代器
-		// @param: void
-		// @ret: 返回容器迭代器
-		// @birth: created by Dablelv on 20180802
 		void createTable(const string&, const vector<Attribute>&, const string&);
 		void dropTable(const string&);
 		void createIndex(const string&, const string&, const string&);

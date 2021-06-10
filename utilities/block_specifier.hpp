@@ -10,4 +10,7 @@ class BlockSpecifier {
 		BlockSpecifier(const string&, int);
 		BlockSpecifier(const BlockSpecifier&);
 		~BlockSpecifier();
+		BlockSpecifier() = delete;
+		string schemaName() const;
+		int pageNumber() const;
 };

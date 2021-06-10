@@ -1,5 +1,6 @@
 #pragma once
 #include "basics.hpp"
+#include "bit_stream.hpp"
 using namespace std;
 
 class Item {
@@ -16,9 +17,11 @@ class Item {
 		Item() = delete;
 		~Item();
 		string toString() const;
+		int bitLength() const;
 		bool operator==(const Item&) const;
 		bool operator<(const Item&) const;
 		bool operator<=(const Item&) const;
 		bool operator>=(const Item&) const;
 		bool operator>(const Item&) const;
+		BitStream toBit() const;
 };
