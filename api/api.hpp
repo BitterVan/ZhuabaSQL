@@ -20,6 +20,6 @@ class API {
 		void createIndex(const string&, const string&, const string&);
 		void dropIndex(const string&);
 		void selectTuple(const string&, const vector<Requirement>&);
-		void insertTuple(const string&, const vector<string>&)
+		void insertTuple(const string&, const vector<string>&);
 		void deleteTuple(const string&, const vector<Requirement>&);
 }

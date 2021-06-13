@@ -3,6 +3,7 @@
 #include "bit_stream.hpp"
 #include "requirement.hpp"
 #include "schema.hpp"
+#include <utility>
 using namespace std;
 
 class Tuple {
@@ -17,7 +18,9 @@ class Tuple {
 		~Tuple();
 		Tuple(const Schema&, const vector<Item>&);
 		Tuple(const Schema&, const BitStream&);
+		Tuple& operator=(const Tuple&);
 		BitStream toBit() const;
 		vector<Item> valueList(const vector<string>&) const;
 		bool meetRequirement(const vector<Requirement>&) const;
+		void _debug_show_info() const;
 };

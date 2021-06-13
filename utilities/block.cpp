@@ -26,20 +26,23 @@ void Block::writeBack() const {
 		pos += block_schema.bitLength();
 	}
 	write_file.write(page, BLOCK_SIZE);
+	write_file.close();
 }
 
 void Block::clean() {
 	dirty = 0;
 }
 
+Block::Block(const Block&) = default;
+
 Block::Block(const Schema& src_schema, const BlockSpecifier& src_block_spec) : block_schema(src_schema), specifier(src_block_spec) {
 	capacity = max(REAL_SIZE / block_schema.bitLength(), MAX_CAPACITY);
-	pinned = 0;
 	dirty = 0;
 	char page[BLOCK_SIZE];
 	ifstream init_file(src_block_spec.schemaName());
 	init_file.seekg(src_block_spec.pageNumber() * BLOCK_SIZE, ios::beg);
 	init_file.read(page, BLOCK_SIZE);
+	init_file.close();
 
 	char valid[MAX_CAPACITY];
 	char data[REAL_SIZE];
@@ -87,10 +90,7 @@ void Block::deleteTuple(const vector<Requirement>& src_requirements) {
 	}
 }
 
-void Block::pin() {
-	pinned = 1;
-}
 
-void Block::unpin() {
-	pinned = 0;
+bool Block::isFull() const {
+	return tuple_list.size() == capacity;
 }

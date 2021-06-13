@@ -14,3 +14,11 @@ string BlockSpecifier::schemaName() const {
 int BlockSpecifier::pageNumber() const {
 	return page_number;
 }
+
+bool BlockSpecifier::operator==(const BlockSpecifier& src_specifier) const {
+	return (schema_name == src_specifier.schema_name) && (page_number == src_specifier.page_number);
+}
+
+// size_t block_spec_hash(const BlockSpecifier& src_specifier) {
+// 	return hash<string>()(src_specifier.schemaName()) ^ hash<int>()(src_specifier.pageNumber());
+// }

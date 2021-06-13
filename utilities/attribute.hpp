@@ -9,7 +9,7 @@ class Attribute {
 	public:
 		Attribute(Type, int);
 		Attribute(const Attribute&);
-		Attribute() = delete;
+		Attribute();
 		~Attribute();
 		Type attributeType() const;
 		int attributeLength() const;

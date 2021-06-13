@@ -12,6 +12,11 @@ Tuple::Tuple(const Schema& src_schema, const vector<Item>& src_vals) : tuple_sch
 	}
 }
 
+Tuple& Tuple::operator=(const Tuple& src_tuple) {
+	tuple_vals = src_tuple.tuple_vals;
+	return *this;
+}
+
 Tuple::Tuple(const Schema& src_schema, const BitStream& src_bit_stream) : tuple_schema(src_schema) {
 	vector<string> name_list = src_schema.nameList();
 	vector<Type> type_list = src_schema.typeList();
@@ -98,4 +103,13 @@ bool Tuple::meetRequirement(const vector<Requirement>& src_requirements) const {
 		}
 	}
 	return ret;
+}
+
+void Tuple::_debug_show_info() const {
+	cerr << "*************** Showing Tuple Information ****************" << endl;
+	tuple_schema._debug_show_info();
+	for (auto i : tuple_schema.nameList()) {
+		cerr << i << ": " << tuple_vals.find(i)->second.toString() << endl;
+	}
+	cerr << "**********************************************************" << endl;
 }

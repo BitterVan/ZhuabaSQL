@@ -7,6 +7,8 @@ Attribute::Attribute(const Attribute&) = default;
 
 Attribute::~Attribute() = default;
 
+Attribute::Attribute() = default;
+
 Type Attribute::attributeType() const {
 	return data_type;
 }

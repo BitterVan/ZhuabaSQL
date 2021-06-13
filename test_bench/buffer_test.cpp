@@ -1,5 +1,4 @@
-#include "../utilities/tuple.hpp"
-#include "../utilities/block.hpp"
+#include "../buffer_pool/buffer_pool.hpp"
 using namespace std;
 
 int main() {
@@ -53,15 +52,16 @@ int main() {
 	block.insertTuple(tuple);
 	block.insertTuple(rebuild);
 	vector<Requirement> requires;
-	// requires.push_back(Requirement("hello", Item(1), Operator::EQ));
-	// requires.push_back(Requirement("hello", Item(1), Operator::LE));
-	// requires.push_back(Requirement("hello", Item(1), Operator::GT));
-	auto result = block.selectTuple(requires);
-	cout << "TOTALSIZE: " << result.size() << endl;
-	block.deleteTuple(requires);
-	result = block.selectTuple(requires);
-	cout << "TOTALSIZE: " << result.size() << endl;
-	// for (auto i : result) {
-	// 	i._debug_show_info();
-	// }
+
+	BufferPool buffer_pool;
+	buffer_pool._debug_show_info();
+	buffer_pool.createSchema(schema);
+	buffer_pool._debug_show_info();
+	// buffer_pool.dropSchema("haha");
+	for (int i = 0; i < 150; i++) {
+		buffer_pool[BlockSpecifier("haha", i)];
+	}
+	buffer_pool._debug_show_info();
+	buffer_pool.dropSchema("haha");
+	buffer_pool._debug_show_info();
 }
