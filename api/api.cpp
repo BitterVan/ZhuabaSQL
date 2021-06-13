@@ -1,8 +1,8 @@
 #include "api.hpp"
 using namespace std;
 
-API::API(CatalogManager& src_catalog_manager, RecordManager& src_record_manager):
-	catalog_manager(src_catalog_manager), record_manager(src_record_manager) {}
+API::API(CatalogManager& src_catalog_manager, RecordManager& src_record_manager, UI& src_ui):
+	catalog_manager(src_catalog_manager), record_manager(src_record_manager), ui(src_ui) {}
 
 API::~API() = default;
 
@@ -23,7 +23,10 @@ void API::dropTable(const string& src_schema_name) {
 }
 
 vector<Tuple> API::selectTuple(const string& src_schema_name, const vector<Requirement>& src_requirements) const {
-	return record_manager.selectTuple(src_schema_name, src_requirements);
+	auto ret = record_manager.selectTuple(src_schema_name, src_requirements);
+	cerr << ret.size() << endl;
+	ui.plotTable(ret);
+	return ret;
 }
 
 void API::insertTuple(const string& src_schema_name, const vector<string>& src_tuple_vals) {
@@ -36,4 +39,8 @@ void API::deleteTuple(const string& src_schema_name, const vector<Requirement>& 
 
 Type API::fetchType(const string& src_schema_name, const string& src_attr_name) const {
 	return catalog_manager.fetchType(src_schema_name, src_attr_name);
+}
+
+string API::fetchStatement() const {
+	return ui.fetchStatement();
 }

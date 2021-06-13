@@ -1,6 +1,7 @@
 #pragma once
 #include "../record_manager/record_manager.hpp"
 #include "../catalog_manager/catalog_manager.hpp"
+#include "../ui/ui.hpp"
 #include <vector>
 using namespace std;
 
@@ -12,9 +13,10 @@ class API {
 		CatalogManager& catalog_manager;
 		// IndexManager& index_manager;
 		RecordManager& record_manager;
+		UI& ui;
 
 	public:
-		API(CatalogManager&, RecordManager&);
+		API(CatalogManager&, RecordManager&, UI&);
 		~API();
 
 		void createTable(const string&, const vector<string>&, const vector<Attribute>&, const string&);
@@ -25,4 +27,5 @@ class API {
 		void insertTuple(const string&, const vector<string>&);
 		void deleteTuple(const string&, const vector<Requirement>&);
 		Type fetchType(const string&, const string&) const;
+		string fetchStatement() const;
 };

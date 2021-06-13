@@ -1,3 +1,4 @@
+#pragma once
 #include "../buffer_pool/buffer_pool.hpp"
 using namespace std;
 
