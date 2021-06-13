@@ -14,7 +14,7 @@ class Item {
 		Item(double);
 		Item(const string&);
 		Item(const Item&);
-		Item() = delete;
+		Item();
 		~Item();
 		string toString() const;
 		int bitLength() const;

@@ -1,3 +1,4 @@
+#pragma once
 #include "../utilities/block.hpp"
 using namespace std;
 
@@ -13,10 +14,12 @@ class BufferPool {
 		BufferPool(const BufferPool&) = delete;
 
 		Block& operator[](const BlockSpecifier&);
+		const Schema& operator[](const string&) const;
 		void pinBlock(const BlockSpecifier&);
 		void unpinBlock(const BlockSpecifier&);
 		void dropSchema(const string&);
 		void createSchema(const Schema&);
 		int schemaBlockNumber(const string&) const;
 		void _debug_show_info() const;
+		Type fetchType(const string&, const string&) const;
 };

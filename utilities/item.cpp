@@ -15,6 +15,8 @@ Item::Item(const string& src_string_val) : string_val(src_string_val) {
 
 Item::Item(const Item&) = default;
 
+Item::Item() = default;
+
 Item::~Item() = default;
 
 string Item::toString() const {

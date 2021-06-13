@@ -25,3 +25,8 @@ const int REAL_SIZE = 3072;
 const int BUFFER_CAPACITY = 128;
 
 const string CATALOG_FILE = ".catalog";
+
+int str2int(const string& src_string);
+
+double str2double(const string& src_string);
+

@@ -1,6 +1,14 @@
 #include "block.hpp"
 using namespace	std;
 
+int min(int a, int b) {
+	if (a < b) {
+		return a;
+	} else {
+		return b;
+	}
+}
+
 int max(int a, int b) {
 	if (a < b) {
 		return b;
@@ -36,7 +44,7 @@ void Block::clean() {
 Block::Block(const Block&) = default;
 
 Block::Block(const Schema& src_schema, const BlockSpecifier& src_block_spec) : block_schema(src_schema), specifier(src_block_spec) {
-	capacity = max(REAL_SIZE / block_schema.bitLength(), MAX_CAPACITY);
+	capacity = min(REAL_SIZE / block_schema.bitLength(), MAX_CAPACITY);
 	dirty = 0;
 	char page[BLOCK_SIZE];
 	ifstream init_file(src_block_spec.schemaName());

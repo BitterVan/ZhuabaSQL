@@ -16,10 +16,10 @@ BufferPool::BufferPool() {
 }
 
 BufferPool::~BufferPool() {
+	ofstream catalog_stream(CATALOG_FILE);
+	catalog_stream << schema_map.size() << endl;
 	unpinned_list.clear();
 	block_map.clear();
-	ofstream catalog_stream(CATALOG_FILE);
-	catalog_stream << block_map.size() << endl;
 	for (auto i : schema_map) {
 		catalog_stream << i.second.toString() << endl;
 	}
@@ -103,6 +103,7 @@ void BufferPool::dropSchema(const string& src_schema_name) {
 	if (schema_map.find(src_schema_name) != schema_map.end()) {
 		schema_map.erase(schema_map.find(src_schema_name));
 	}
+	remove(src_schema_name.c_str());
 }
 
 int BufferPool::schemaBlockNumber(const string& src_file_name) const {
@@ -114,4 +115,20 @@ int BufferPool::schemaBlockNumber(const string& src_file_name) const {
 void BufferPool::_debug_show_info() const {
 	cerr << "Schema number: " << schema_map.size() << endl;
 	cerr << "Pool block number: " << block_map.size() << endl;
+}
+
+const Schema& BufferPool::operator[](const string& src_schema_name) const {
+	return schema_map.find(src_schema_name)->second;
+}
+
+Type BufferPool::fetchType(const string& src_schema_name, const string& src_attr_name) const {
+	auto temp = schema_map.find(src_schema_name)->second;
+	auto name_list = temp.nameList();
+	auto type_list = temp.typeList();
+	for (int i = 0; i < name_list.size(); i++) {
+		if (name_list[i] == src_attr_name) {
+			return type_list[i];
+		}
+	}
+	return Type::INT;
 }

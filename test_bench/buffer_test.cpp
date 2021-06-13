@@ -48,10 +48,10 @@ int main() {
 	BlockSpecifier specifier("haha", 0);
 	cout << schema.toString() << endl;
 	cout << Schema(schema.toString()).toString() << endl;
-	Block block(schema, specifier);
-	block.insertTuple(tuple);
-	block.insertTuple(rebuild);
-	vector<Requirement> requires;
+	// Block block(schema, specifier);
+	// block.insertTuple(tuple);
+	// block.insertTuple(rebuild);
+	// vector<Requirement> requires;
 
 	BufferPool buffer_pool;
 	buffer_pool._debug_show_info();
@@ -59,7 +59,9 @@ int main() {
 	buffer_pool._debug_show_info();
 	// buffer_pool.dropSchema("haha");
 	for (int i = 0; i < 150; i++) {
-		buffer_pool[BlockSpecifier("haha", i)];
+		while (!buffer_pool[BlockSpecifier("haha", i)].isFull()) {
+			buffer_pool[BlockSpecifier("haha", i)].insertTuple(rebuild);
+		}
 	}
 	buffer_pool._debug_show_info();
 	buffer_pool.dropSchema("haha");

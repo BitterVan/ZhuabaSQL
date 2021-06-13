@@ -11,6 +11,7 @@ class Requirement {
 	
 	public:
 		Requirement(const string&, const Item&, Operator);
+		Requirement(const string&, const string&, const string&, Type);
 		Requirement(const Requirement&);
 		~Requirement();
 
