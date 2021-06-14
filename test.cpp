@@ -15,7 +15,11 @@ int main() {
 		if (temp == "quit;") {
 			break;
 		} else {
-			interpreter.interpret(temp);
+			try {
+				interpreter.interpret(temp);
+			} catch (exception& exp) {
+				cerr << exp.what() << endl;
+			}
 		}
 	}
 }

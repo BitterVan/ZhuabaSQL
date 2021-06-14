@@ -19,11 +19,11 @@ class Interpreter{
     string getterm(string s, int pos); //pos starts from 0.
 };
 
-class SyntaxError{
-    public:
-    void print(){
-        cerr<<"Syntax error!"<<endl;
-    }
-};
+// class SyntaxError{
+//     public:
+//     void print(){
+//         cerr<<"Syntax error!"<<endl;
+//     }
+// };
 
 #endif

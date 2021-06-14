@@ -21,7 +21,19 @@ string UI::fetchStatement() const {
 }
 
 void UI::plotTable(const vector<string>& src_name_list, const vector<Type>& src_type_list, const vector<int>& src_length_list, const vector<Tuple>& src_tuple_list, const vector<string>& src_attr_names) const{
-	cout << "Select " << src_tuple_list.size() << " results" << endl;
+	// cout << "Select " << src_tuple_list.size() << " results" << endl;
+	switch (src_tuple_list.size())
+	{
+	case 0:
+		cout << "Empty set" << endl;
+		break;
+	case 1:
+		cout << "1 record selected" << endl;
+		break;
+	default:
+		cout << src_tuple_list.size() << " records selected" << endl;
+		break;
+	}
 	vector<string> titles;
 	vector<string> new_titles;
 	for (int i = 0; i < src_name_list.size(); i++) {

@@ -82,7 +82,11 @@ void BufferPool::unpinBlock(const BlockSpecifier& src_specifier) {
 }
 
 void BufferPool::createSchema(const Schema& src_schema) {
+	if (schema_map.find(src_schema.name()) != schema_map.end()) {
+		throw SchemaDuplication();
+	}
 	schema_map.emplace(src_schema.name(), src_schema);
+	ofstream(src_schema.name()) << string(BLOCK_SIZE, 0);
 }
 
 void BufferPool::dropSchema(const string& src_schema_name) {
@@ -110,9 +114,9 @@ int BufferPool::schemaBlockNumber(const string& src_file_name) const {
 	fstream file_stream(src_file_name);
 	int buffer_max = 0;
 	file_stream.seekg(0, file_stream.end);
-	for (auto i : block_map) {
-		if (i.first.schemaName() == src_file_name) {
-			buffer_max = max(buffer_max, i.first.pageNumber()+1);
+	for (auto i = block_map.begin(); i != block_map.end(); i++) {
+		if (i->first.schemaName() == src_file_name) {
+			buffer_max = max(buffer_max, i->first.pageNumber()+1);
 		}
 	}
 	return max(int(file_stream.tellg() / BLOCK_SIZE), buffer_max);
@@ -124,6 +128,9 @@ void BufferPool::_debug_show_info() const {
 }
 
 const Schema& BufferPool::operator[](const string& src_schema_name) const {
+	if (schema_map.find(src_schema_name) == schema_map.end()) {
+		throw SchemaError();
+	}
 	return schema_map.find(src_schema_name)->second;
 }
 

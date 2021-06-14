@@ -1,7 +1,9 @@
 #include <cstdio>
+#include <fstream>
 using namespace std;
 
 int main() {
-    std::remove("haha");
-    return 0;
+    fstream file("test_file");
+    file.seekp(0);
+    file.write("542342542543253425432552", 20);
 }

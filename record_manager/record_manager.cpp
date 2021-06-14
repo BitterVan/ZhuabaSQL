@@ -9,6 +9,9 @@ RecordManager::~RecordManager() = default;
 
 void RecordManager::insertTuple(const string& src_schema_name, const vector<string>& src_tuple_vals) {
 	auto type_list = buffer_pool[src_schema_name].typeList();
+	if (type_list.size() != src_tuple_vals.size()) {
+		throw TupleInitialFail();
+	}
 	vector<Item> items;
 	string temp;
 	for (int i = 0; i < type_list.size(); i++) {
@@ -22,7 +25,7 @@ void RecordManager::insertTuple(const string& src_schema_name, const vector<stri
 		case Type::STRING:
 			if (src_tuple_vals[i][0] == '\'') {
 				temp = string(src_tuple_vals[i], 1, src_tuple_vals[i].length() - 2);	
-			} else {
+			} else if (src_tuple_vals[i] == "null"){
 				temp = "null";
 			}
 			items.push_back(Item(temp));
@@ -47,8 +50,10 @@ void RecordManager::deleteTuple(const string& src_schema_name, const vector<Requ
 
 vector<Tuple> RecordManager::selectTuple(const string& src_schema_name, const vector<Requirement>& src_requirements) const {
 	vector<Tuple> ret;
+	// cerr << buffer_pool.schemaBlockNumber(src_schema_name) << endl;
 	for (int i = 0; i < buffer_pool.schemaBlockNumber(src_schema_name); i++) {
 		auto temp = buffer_pool[BlockSpecifier(src_schema_name, i)].selectTuple(src_requirements);
+		// cerr << temp.size() << endl;
 		for (auto j : temp) {
 			ret.push_back(j);
 		}

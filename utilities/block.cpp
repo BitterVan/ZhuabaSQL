@@ -1,24 +1,24 @@
 #include "block.hpp"
 using namespace	std;
 
-int min(int a, int b) {
-	if (a < b) {
-		return a;
-	} else {
-		return b;
-	}
-}
+// int min(int a, int b) {
+// 	if (a < b) {
+// 		return a;
+// 	} else {
+// 		return b;
+// 	}
+// }
 
-int max(int a, int b) {
-	if (a < b) {
-		return b;
-	} else {
-		return a;
-	}
-}
+// int max(int a, int b) {
+// 	if (a < b) {
+// 		return b;
+// 	} else {
+// 		return a;
+// 	}
+// }
 
 void Block::writeBack() const {
-	ofstream write_file(specifier.schemaName());
+	fstream write_file(specifier.schemaName());
 	write_file.seekp(specifier.pageNumber() * BLOCK_SIZE);
 	char page[BLOCK_SIZE];
 	for (int i = 0; i < MAX_CAPACITY; i++) {

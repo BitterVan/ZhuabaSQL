@@ -24,7 +24,9 @@ double str2double(const string& src_string) {
 string str2str(const string& src_string) {
 	if (src_string == "null") {
 		return INVALID_STRING;
-	} else {
+	} else if (src_string[0] == '\'') {
 		return src_string;
+	} else {
+		return "  ";
 	}
 }
