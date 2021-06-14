@@ -24,4 +24,5 @@ class Item {
 		bool operator>=(const Item&) const;
 		bool operator>(const Item&) const;
 		BitStream toBit() const;
+		bool holdNull() const;
 };

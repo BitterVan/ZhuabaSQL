@@ -90,8 +90,6 @@ void Interpreter::interpret(string s){
                 } else if (datatype == "char") {
                     data_type = Type::STRING;
                 } else {
-                    cerr << datatype << endl;
-                    cerr << "My fault" << endl;
                     throw SyntaxError();
                 }
                 attr.push_back(Attribute(data_type,datalen));

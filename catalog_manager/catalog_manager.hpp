@@ -15,4 +15,7 @@ class CatalogManager {
 		void createTable(const string&, const vector<string>&, const vector<Attribute>&, const string&);
 		void dropTable(const string&);
 		Type fetchType(const string&, const string&) const;
+		vector<string> nameList(const string&) const;
+		vector<Type> typeList(const string&) const;
+		vector<int> lengthList(const string&) const;
 };

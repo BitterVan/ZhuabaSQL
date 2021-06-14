@@ -23,9 +23,11 @@ void API::dropTable(const string& src_schema_name) {
 }
 
 vector<Tuple> API::selectTuple(const string& src_schema_name, const vector<Requirement>& src_requirements) const {
+	auto nameList = catalog_manager.nameList(src_schema_name);
+	auto typeList = catalog_manager.typeList(src_schema_name);
+	auto lengthList = catalog_manager.lengthList(src_schema_name);
 	auto ret = record_manager.selectTuple(src_schema_name, src_requirements);
-	cerr << ret.size() << endl;
-	ui.plotTable(ret);
+	ui.plotTable(nameList, typeList, lengthList, ret, nameList);
 	return ret;
 }
 

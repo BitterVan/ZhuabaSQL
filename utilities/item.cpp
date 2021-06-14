@@ -20,6 +20,9 @@ Item::Item() = default;
 Item::~Item() = default;
 
 string Item::toString() const {
+	if (holdNull()) {
+		return "null";
+	}
 	string ret;
 	switch (item_type) {
 	case Type::INT:
@@ -29,7 +32,7 @@ string Item::toString() const {
 		ret = to_string(double_val);
 		break;	
 	case Type::STRING:
-		ret = string_val;
+		ret = "'" + string_val + "'";
 		break;
 	default:
 		break;
@@ -158,6 +161,25 @@ BitStream Item::toBit() const {
 		break;
 	case Type::STRING:
 		memcpy(ret.begin(), string_val.c_str(), string_val.length());
+		break;
+	default:
+		break;
+	}
+	return ret;
+}
+
+bool Item::holdNull() const {
+	bool ret;
+	switch (item_type)
+	{
+	case Type::INT:
+		ret = int_val == INVALID_INT;
+		break;
+	case Type::DOUBLE:
+		ret = double_val == INVALID_DOUBLE;
+		break;
+	case Type::STRING:
+		ret = string_val == INVALID_STRING;
 		break;
 	default:
 		break;

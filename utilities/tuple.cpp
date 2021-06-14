@@ -69,6 +69,9 @@ vector<Item> Tuple::valueList(const vector<string>& src_attr_list) const {
 bool Tuple::meet(const Requirement& src_requirement) const {
 	bool ret;
 	Item target = tuple_vals.find(src_requirement.attribute_name)->second;
+	if (target.holdNull()) {
+		return true;
+	}
 	switch (src_requirement.operator_type) {
 	case Operator::EQ:
 		ret = target == src_requirement.item;

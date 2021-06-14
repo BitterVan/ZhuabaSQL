@@ -24,6 +24,7 @@ class Block {
 		void deleteTuple(const vector<Requirement>&);
 		void clean();
 		bool isFull() const;
+		string schemaName() const;
 		// void pin();
 		// void unpin();
 

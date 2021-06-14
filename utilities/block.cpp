@@ -102,3 +102,7 @@ void Block::deleteTuple(const vector<Requirement>& src_requirements) {
 bool Block::isFull() const {
 	return tuple_list.size() == capacity;
 }
+
+string Block::schemaName() const {
+	return block_schema.name();
+}

@@ -10,6 +10,7 @@ RecordManager::~RecordManager() = default;
 void RecordManager::insertTuple(const string& src_schema_name, const vector<string>& src_tuple_vals) {
 	auto type_list = buffer_pool[src_schema_name].typeList();
 	vector<Item> items;
+	string temp;
 	for (int i = 0; i < type_list.size(); i++) {
 		switch (type_list[i]) {
 		case Type::INT:
@@ -19,7 +20,12 @@ void RecordManager::insertTuple(const string& src_schema_name, const vector<stri
 			items.push_back(Item(str2double(src_tuple_vals[i])));
 			break;
 		case Type::STRING:
-			items.push_back(Item(src_tuple_vals[i]));
+			if (src_tuple_vals[i][0] == '\'') {
+				temp = string(src_tuple_vals[i], 1, src_tuple_vals[i].length() - 2);	
+			} else {
+				temp = "null";
+			}
+			items.push_back(Item(temp));
 			break;
 		default:
 			break;

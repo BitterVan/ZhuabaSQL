@@ -8,5 +8,5 @@ class UI {
 		UI();
 		~UI();
 		string fetchStatement() const;
-		void plotTable(const vector<Tuple>&) const;
+		void plotTable(const vector<string>&, const vector<Type>&, const vector<int>&, const vector<Tuple>&, const vector<string>&) const;
 };

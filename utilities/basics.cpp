@@ -2,6 +2,9 @@
 using namespace std;
 
 int str2int(const string& src_string) {
+	if (src_string == "null") {
+		return INVALID_INT;
+	}
 	stringstream temp(src_string);
 	int ret;
 	temp >> ret;
@@ -9,9 +12,19 @@ int str2int(const string& src_string) {
 }
 
 double str2double(const string& src_string) {
+	if (src_string == "null") {
+		return INVALID_DOUBLE;
+	}
 	stringstream temp(src_string);
 	double ret;
 	temp >> ret;
 	return ret;
 }
 
+string str2str(const string& src_string) {
+	if (src_string == "null") {
+		return INVALID_STRING;
+	} else {
+		return src_string;
+	}
+}

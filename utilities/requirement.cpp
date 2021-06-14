@@ -16,7 +16,7 @@ Requirement::Requirement(const string& src_attr_name, const string& src_operator
 		item = Item(str2double(src_val));
 		break;
 	case Type::STRING:
-		item = Item(src_val);
+		item = Item(str2str(src_val));
 		break;	
 	default:
 		break;

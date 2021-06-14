@@ -108,8 +108,14 @@ void BufferPool::dropSchema(const string& src_schema_name) {
 
 int BufferPool::schemaBlockNumber(const string& src_file_name) const {
 	fstream file_stream(src_file_name);
+	int buffer_max = 0;
 	file_stream.seekg(0, file_stream.end);
-	return file_stream.tellg() / BLOCK_SIZE;
+	for (auto i : block_map) {
+		if (i.first.schemaName() == src_file_name) {
+			buffer_max = max(buffer_max, i.first.pageNumber()+1);
+		}
+	}
+	return max(int(file_stream.tellg() / BLOCK_SIZE), buffer_max);
 }
 
 void BufferPool::_debug_show_info() const {

@@ -18,3 +18,15 @@ void CatalogManager::dropTable(const string& src_schema_name) {
 Type CatalogManager::fetchType(const string& src_schema_name, const string& src_attr_name) const {
 	return buffer_pool.fetchType(src_schema_name, src_attr_name);
 }
+
+vector<string> CatalogManager::nameList(const string& src_schema_name) const {
+	return buffer_pool[src_schema_name].nameList();
+}
+
+vector<Type> CatalogManager::typeList(const string& src_schema_name) const {
+	return buffer_pool[src_schema_name].typeList();
+}
+
+vector<int> CatalogManager::lengthList(const string& src_schema_name) const {
+	return buffer_pool[src_schema_name].lengthList();
+}
