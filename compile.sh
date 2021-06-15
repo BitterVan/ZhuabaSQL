@@ -1,2 +1,1 @@
-g++ test.cpp exception/zhuaba_exceptions.cpp ui/*.cpp api/*.cpp buffer_pool/*.cpp catalog_manager/*.cpp index_manager/*.cpp interpreter/*.cpp record_manager/*.cpp utilities/*.cpp -o now
-
+g++ -o sql main/test.cpp api/*.cpp buffer_pool/*.cpp catalog_manager/*.cpp exception/*.cpp index_manager/*.cpp interpreter/*.cpp record_manager/*.cpp ui/*.cpp utilities/*.cpp

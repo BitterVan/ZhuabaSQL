@@ -18,7 +18,7 @@ using namespace	std;
 // }
 
 void Block::writeBack() const {
-	fstream write_file(specifier.schemaName());
+	fstream write_file(FILE_PREFIX + specifier.schemaName());
 	write_file.seekp(specifier.pageNumber() * BLOCK_SIZE);
 	char page[BLOCK_SIZE];
 	for (int i = 0; i < MAX_CAPACITY; i++) {
@@ -47,7 +47,7 @@ Block::Block(const Schema& src_schema, const BlockSpecifier& src_block_spec) : b
 	capacity = min(REAL_SIZE / block_schema.bitLength(), MAX_CAPACITY);
 	dirty = 0;
 	char page[BLOCK_SIZE];
-	ifstream init_file(src_block_spec.schemaName());
+	ifstream init_file(FILE_PREFIX + src_block_spec.schemaName());
 	init_file.seekg(src_block_spec.pageNumber() * BLOCK_SIZE, ios::beg);
 	init_file.read(page, BLOCK_SIZE);
 	init_file.close();
