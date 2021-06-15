@@ -72,3 +72,14 @@ Type API::fetchType(const string& src_schema_name, const string& src_attr_name) 
 string API::fetchStatement() const {
 	return ui.fetchStatement();
 }
+
+vector<string> API::fetchFile(const string& src_file_name) const {
+	vector<string> ret;
+	string temp;
+	ifstream file_stream(src_file_name);
+	while (getline(file_stream, temp)) {
+		ret.push_back(temp);
+	}
+	file_stream.close();
+	return ret;
+}

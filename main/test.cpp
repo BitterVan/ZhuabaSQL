@@ -16,17 +16,41 @@ int main() {
 		auto begin = chrono::system_clock::now();
 		if (temp == "quit;") {
 			break;
-		} else {
+		} else if (temp.find("execfile") == temp.npos) {
 			try {
 				interpreter.interpret(temp);
-				auto end = chrono::system_clock::now();
-				auto duration = chrono::duration_cast<chrono::microseconds>(end - begin);
-				cout <<  "Finish execution in " 
-					<< double(duration.count()) * chrono::microseconds::period::num / chrono::microseconds::period::den 
-					<< " seconds" << endl;
+			// 	auto end = chrono::system_clock::now();
+			// 	auto duration = chrono::duration_cast<chrono::microseconds>(end - begin);
+			// 	cout <<  "Finish execution in " 
+			// 		<< double(duration.count()) * chrono::microseconds::period::num / chrono::microseconds::period::den 
+			// 		<< " seconds" << endl;
 			} catch (exception& exp) {
 				cerr << exp.what() << endl;
+				continue;
+			}
+		} else {
+			string word;
+			stringstream temp_stream(temp);
+			temp_stream >> word;
+			temp_stream >> word;
+			auto inst_list = api.fetchFile(string(word, 0, word.length()-1));
+			// cerr << "fetch list" << endl;
+			for (auto i : inst_list) {
+				if (i == "quit;") {
+					return 0;
+				}
+				try {
+					interpreter.interpret(i);
+				} catch (exception& exp) {
+					cerr << exp.what() << endl;
+					continue;
+				}
 			}
 		}
+		auto end = chrono::system_clock::now();
+		auto duration = chrono::duration_cast<chrono::microseconds>(end - begin);
+		cout <<  "Finish execution in " 
+			<< double(duration.count()) * chrono::microseconds::period::num / chrono::microseconds::period::den 
+			<< " seconds" << endl;
 	}
 }
