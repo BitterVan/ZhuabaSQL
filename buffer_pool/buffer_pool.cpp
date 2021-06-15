@@ -143,5 +143,6 @@ Type BufferPool::fetchType(const string& src_schema_name, const string& src_attr
 			return type_list[i];
 		}
 	}
+	throw NoMatchingAttribute();
 	return Type::INT;
 }

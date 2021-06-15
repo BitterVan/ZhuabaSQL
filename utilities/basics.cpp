@@ -25,8 +25,8 @@ string str2str(const string& src_string) {
 	if (src_string == "null") {
 		return INVALID_STRING;
 	} else if (src_string[0] == '\'') {
-		return src_string;
+		return string(src_string, 1, src_string.size() -2);
 	} else {
-		return "  ";
+		return src_string;
 	}
 }

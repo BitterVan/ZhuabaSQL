@@ -8,6 +8,13 @@ RecordManager::RecordManager(BufferPool& src_buffer) : buffer_pool(src_buffer) {
 RecordManager::~RecordManager() = default;
 
 void RecordManager::insertTuple(const string& src_schema_name, const vector<string>& src_tuple_vals) {
+	auto primary_key = buffer_pool[src_schema_name].primaryKey();
+	auto primary_type = buffer_pool.fetchType(src_schema_name, primary_key);
+	auto name_list = buffer_pool[src_schema_name].nameList();
+	int position = find(name_list.begin(), name_list.end(), primary_key) - name_list.begin();
+	if (src_tuple_vals[position] == "null") {
+		throw PrimaryNull();
+	}
 	auto type_list = buffer_pool[src_schema_name].typeList();
 	if (type_list.size() != src_tuple_vals.size()) {
 		throw TupleInitialFail();

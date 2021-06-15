@@ -18,4 +18,5 @@ class CatalogManager {
 		vector<string> nameList(const string&) const;
 		vector<Type> typeList(const string&) const;
 		vector<int> lengthList(const string&) const;
+		Schema fetchSchema(const string&) const;
 };

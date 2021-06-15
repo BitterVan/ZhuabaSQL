@@ -22,6 +22,7 @@ class Schema {
 		vector<int> lengthList() const;
 		int bitLength() const;
 		string name() const;
+		string primaryKey() const;
 		string toString() const;
 		void _debug_show_info() const;
 };

@@ -30,3 +30,7 @@ vector<Type> CatalogManager::typeList(const string& src_schema_name) const {
 vector<int> CatalogManager::lengthList(const string& src_schema_name) const {
 	return buffer_pool[src_schema_name].lengthList();
 }
+
+Schema CatalogManager::fetchSchema(const string& src_schema_name) const {
+	return buffer_pool[src_schema_name];
+}

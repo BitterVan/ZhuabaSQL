@@ -161,6 +161,7 @@ BitStream Item::toBit() const {
 		break;
 	case Type::STRING:
 		memcpy(ret.begin(), string_val.c_str(), string_val.length());
+		memcpy(ret.begin() + string_val.length(), string(100, '\0').c_str(), bitLength() - string_val.length());
 		break;
 	default:
 		break;

@@ -32,6 +32,32 @@ vector<Tuple> API::selectTuple(const string& src_schema_name, const vector<Requi
 }
 
 void API::insertTuple(const string& src_schema_name, const vector<string>& src_tuple_vals) {
+	auto schema = catalog_manager.fetchSchema(src_schema_name);
+	auto primary_key = schema.primaryKey();
+	auto type = catalog_manager.fetchType(src_schema_name, primary_key);
+	auto nameList = catalog_manager.nameList(src_schema_name);
+	int pos = find(nameList.begin(), nameList.end(), primary_key) - nameList.begin();
+	vector<Requirement> require;
+	// cerr << src_tuple_vals[pos] << endl;
+	string temp = string(src_tuple_vals[pos], 1, src_tuple_vals[pos].size() - 2);
+	switch (type)
+	{
+	case Type::INT:
+		require.push_back(Requirement(primary_key, Item(str2int(src_tuple_vals[pos])), Operator::EQ));
+		break;
+	case Type::DOUBLE:
+		require.push_back(Requirement(primary_key, Item(str2double(src_tuple_vals[pos])), Operator::EQ));
+		break;
+	case Type::STRING:
+		require.push_back(Requirement(primary_key, Item(temp), Operator::EQ));
+		break;
+	default:
+		break;
+	}
+	auto select = selectTuple(src_schema_name, require);
+	if (select.size()) {
+		throw PrimaryExist();
+	}
 	record_manager.insertTuple(src_schema_name, src_tuple_vals);
 }
 
