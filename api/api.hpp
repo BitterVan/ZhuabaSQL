@@ -28,4 +28,5 @@ class API {
 		void deleteTuple(const string&, const vector<Requirement>&);
 		Type fetchType(const string&, const string&) const;
 		string fetchStatement() const;
+		vector<string> fetchFile(const string&) const;
 };

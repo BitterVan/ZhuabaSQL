@@ -11,6 +11,7 @@
 #include <sstream>
 #include <algorithm>
 #include <cstdio>
+#include <sstream>
 #include "../exception/zhuaba_exceptions.hpp"
 using namespace std;
 
