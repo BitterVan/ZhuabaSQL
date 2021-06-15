@@ -2,7 +2,7 @@
 using namespace std;
 
 BufferPool::BufferPool() {
-	ifstream catalog_stream(CATALOG_FILE);
+	ifstream catalog_stream(FILE_PREFIX + CATALOG_FILE);
 	int schema_amount;
 	catalog_stream >> schema_amount;
 	string line;
@@ -16,7 +16,7 @@ BufferPool::BufferPool() {
 }
 
 BufferPool::~BufferPool() {
-	ofstream catalog_stream(CATALOG_FILE);
+	ofstream catalog_stream(FILE_PREFIX +CATALOG_FILE);
 	catalog_stream << schema_map.size() << endl;
 	unpinned_list.clear();
 	block_map.clear();
@@ -86,7 +86,7 @@ void BufferPool::createSchema(const Schema& src_schema) {
 		throw SchemaDuplication();
 	}
 	schema_map.emplace(src_schema.name(), src_schema);
-	ofstream(src_schema.name()) << string(BLOCK_SIZE, 0);
+	ofstream(FILE_PREFIX + src_schema.name()) << string(BLOCK_SIZE, 0);
 }
 
 void BufferPool::dropSchema(const string& src_schema_name) {
@@ -111,7 +111,7 @@ void BufferPool::dropSchema(const string& src_schema_name) {
 }
 
 int BufferPool::schemaBlockNumber(const string& src_file_name) const {
-	fstream file_stream(src_file_name);
+	fstream file_stream(FILE_PREFIX + src_file_name);
 	int buffer_max = 0;
 	file_stream.seekg(0, file_stream.end);
 	for (auto i = block_map.begin(); i != block_map.end(); i++) {

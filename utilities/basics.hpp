@@ -36,3 +36,4 @@ string str2str(const string& src_stirng);
 const int INVALID_INT = -2147483648;
 const double INVALID_DOUBLE = -2147483648;
 const string INVALID_STRING = ".v";
+const string FILE_PREFIX = "database_file/";
