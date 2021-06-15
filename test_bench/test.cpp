@@ -1,9 +1,8 @@
 #include <cstdio>
 #include <fstream>
+#include <iostream>
 using namespace std;
 
 int main() {
-    fstream file("test_file");
-    file.seekp(0);
-    file.write("542342542543253425432552", 20);
+    cout << char(49) << endl;
 }

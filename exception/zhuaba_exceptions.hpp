@@ -32,3 +32,18 @@ class NotValidString : public exception {
 		const char* what() const throw();
 };
 
+class PrimaryExist : public exception {
+	public:
+		const char* what() const throw();
+};
+
+class PrimaryNull : public exception {
+	public:
+		const char* what() const throw();
+};
+
+class NoMatchingAttribute : public exception {
+	public:
+		const char* what() const throw();
+};
+

@@ -25,3 +25,14 @@ const char* NotValidString::what() const throw() {
 	return "Some string have wrong format!";
 }
 
+const char* PrimaryExist::what() const throw() {
+	return "Duplicated primary key!";
+}
+
+const char* PrimaryNull::what() const throw() {
+	return "Primary key cannot be NULL!";
+}
+
+const char* NoMatchingAttribute::what() const throw() {
+	return "No such attribute!";
+}

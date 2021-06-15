@@ -53,6 +53,7 @@ BitStream Tuple::toBit() const {
 	vector<int> length_list = tuple_schema.lengthList();
 	for (int i = 0; i < name_list.size(); i++) {
 		memcpy(pos, tuple_vals.find(name_list[i])->second.toBit().begin(), length_list[i]);
+		memcpy(pos+tuple_vals.find(name_list[i])->second.bitLength(), string(255, '\0').c_str(), length_list[i] - tuple_vals.find(name_list[i])->second.bitLength());
 		pos += length_list[i];
 	}
 	return ret;

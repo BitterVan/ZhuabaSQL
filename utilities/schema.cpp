@@ -84,3 +84,7 @@ string Schema::toString() const {
 	ret += primary_key;
 	return ret;
 }
+
+string Schema::primaryKey() const {
+	return primary_key;
+}

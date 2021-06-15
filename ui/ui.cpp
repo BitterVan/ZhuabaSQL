@@ -25,13 +25,14 @@ void UI::plotTable(const vector<string>& src_name_list, const vector<Type>& src_
 	switch (src_tuple_list.size())
 	{
 	case 0:
+		return;
 		cout << "Empty set" << endl;
 		break;
 	case 1:
-		cout << "1 record selected" << endl;
+		// cout << "1 record selected" << endl;
 		break;
 	default:
-		cout << src_tuple_list.size() << " records selected" << endl;
+		// cout << src_tuple_list.size() << " records selected" << endl;
 		break;
 	}
 	vector<string> titles;
@@ -98,4 +99,16 @@ void UI::plotTable(const vector<string>& src_name_list, const vector<Type>& src_
 		cout << "+" << string(max_lengths[j]+1, '-');
 	}
 	cout << "+" << endl;;
+	switch (src_tuple_list.size())
+	{
+	case 0:
+		cout << "Empty set" << endl;
+		break;
+	case 1:
+		cout << "1 record selected" << endl;
+		break;
+	default:
+		cout << src_tuple_list.size() << " records selected" << endl;
+		break;
+	}
 }
