@@ -118,7 +118,8 @@ void Block::deleteTuple(const vector<Requirement>& src_requirements) {
 	dirty = 1;
 	for (auto i = tuple_list.begin(); i != tuple_list.end(); i++) {
 		if (i->meetRequirement(src_requirements)) {
-			i = tuple_list.erase(i) - 1;
+			// i = tuple_list.erase(i) - 1;
+			i->makeInvalid();
 		}
 	}
 }

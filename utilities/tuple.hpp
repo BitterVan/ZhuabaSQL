@@ -11,6 +11,7 @@ class Tuple {
 		const Schema& tuple_schema;
 		unordered_map<string, Item> tuple_vals;
 		bool meet(const Requirement&) const;
+		char valid;
 
 	public:
 		Tuple(const Tuple&);
@@ -22,6 +23,7 @@ class Tuple {
 		BitStream toBit() const;
 		vector<Item> valueList(const vector<string>&) const;
 		bool meetRequirement(const vector<Requirement>&) const;
+		void makeInvalid();
 		void _debug_show_info() const;
 		bool _debug_hold_illegal() const;
 };

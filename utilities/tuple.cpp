@@ -6,6 +6,7 @@ Tuple::Tuple(const Tuple&) = default;
 Tuple::~Tuple() = default;
 
 Tuple::Tuple(const Schema& src_schema, const vector<Item>& src_vals) : tuple_schema(src_schema) {
+	valid = 1;
 	vector<string> name_list = src_schema.nameList();
 	for (int i = 0; i < name_list.size(); i++) {
 		tuple_vals.emplace(name_list[i], src_vals[i]);
@@ -41,6 +42,7 @@ Tuple::Tuple(const Schema& src_schema, const BitStream& src_bit_stream) : tuple_
 		}
 		pos += length_list[i];
 	}
+	valid = *pos;
 	delete [] slot;
 }
 
@@ -56,6 +58,7 @@ BitStream Tuple::toBit() const {
 		memcpy(pos+tuple_vals.find(name_list[i])->second.bitLength(), string(255, '\0').c_str(), length_list[i] - tuple_vals.find(name_list[i])->second.bitLength());
 		pos += length_list[i];
 	}
+	*pos = valid;
 	return ret;
 }
 
@@ -100,6 +103,9 @@ bool Tuple::meet(const Requirement& src_requirement) const {
 }
 
 bool Tuple::meetRequirement(const vector<Requirement>& src_requirements) const {
+	if (!valid) {
+		return 0;
+	}
 	bool ret = 1;
 	for (auto i : src_requirements) {
 		if (!meet(i)) {
@@ -145,4 +151,8 @@ bool Tuple::_debug_hold_illegal() const {
 		}
 	}	
 	return 0;
+}
+
+void Tuple::makeInvalid() {
+	valid = 0;
 }

@@ -52,7 +52,7 @@ vector<int> Schema::lengthList() const {
 
 int Schema::bitLength() const {
 	vector<int> length_list = lengthList();
-	return accumulate(length_list.begin(), length_list.end(), 0);
+	return accumulate(length_list.begin(), length_list.end(), sizeof(char));
 }
 
 string Schema::name() const {
