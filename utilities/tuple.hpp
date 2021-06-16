@@ -23,4 +23,5 @@ class Tuple {
 		vector<Item> valueList(const vector<string>&) const;
 		bool meetRequirement(const vector<Requirement>&) const;
 		void _debug_show_info() const;
+		bool _debug_hold_illegal() const;
 };

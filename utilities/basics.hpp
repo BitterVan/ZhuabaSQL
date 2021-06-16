@@ -24,7 +24,7 @@ enum class Operator {EQ, NE, LT, LE, GT, GE};
 const int BLOCK_SIZE = 4096;
 const int MAX_CAPACITY = 1024;
 const int REAL_SIZE = 3072;
-const int BUFFER_CAPACITY = 8;
+const int BUFFER_CAPACITY = 2;
 
 const string CATALOG_FILE = ".catalog";
 
@@ -38,4 +38,4 @@ const int INVALID_INT = -2147483648;
 const double INVALID_DOUBLE = -2147483648;
 const string INVALID_STRING = ".v";
 const string FILE_PREFIX = "database_file/";
-const string FREE_LIST_PREFIX = "database_file/."
+const string FREE_LIST_PREFIX = "database_file/.";

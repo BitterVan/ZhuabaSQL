@@ -22,4 +22,6 @@ class BufferPool {
 		int schemaBlockNumber(const string&) const;
 		void _debug_show_info() const;
 		Type fetchType(const string&, const string&) const;
+
+		unordered_map<string, list<int>> free_list;
 };

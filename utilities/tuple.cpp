@@ -117,3 +117,32 @@ void Tuple::_debug_show_info() const {
 	}
 	cerr << "**********************************************************" << endl;
 }
+
+bool Tuple::_debug_hold_illegal() const {
+	auto type_list = tuple_schema.typeList();
+	auto name_list = tuple_schema.nameList();
+	auto val_list = valueList(name_list);
+	for (int i = 0; i < type_list.size(); i++) {
+		switch (type_list[i])
+		{
+		case Type::INT:
+			if (val_list[i].int_val == 0) {
+				return 1;
+			}
+			break;
+		case Type::DOUBLE:
+			if (val_list[i].double_val == 0) {
+				return 1;
+			}
+			break;
+		case Type::STRING:
+			if (val_list[i].string_val == "") {
+				return 1;
+			}
+			break;
+		default:
+			break;
+		}
+	}	
+	return 0;
+}

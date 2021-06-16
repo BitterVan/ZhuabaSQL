@@ -13,6 +13,19 @@ BufferPool::BufferPool() {
 		Schema temp(line);
 		schema_map.emplace(temp.name(), temp);
 	}
+	for (auto i : schema_map) {
+		char temp_a[BLOCK_SIZE];
+		ifstream temp(FREE_LIST_PREFIX + i.first);
+		// read(temp, temp_a);
+		temp.read(temp_a, BLOCK_SIZE);
+		for (int j = 0; j < BLOCK_SIZE; j++) {
+			if (temp_a[j] == '1') {
+				free_list[i.first].push_back(j);
+			}
+		}
+		temp.close();
+	}
+	catalog_stream.close();
 }
 
 BufferPool::~BufferPool() {
@@ -23,6 +36,19 @@ BufferPool::~BufferPool() {
 	for (auto i : schema_map) {
 		catalog_stream << i.second.toString() << endl;
 	}
+	for (auto i : schema_map) {
+		fstream free_stream(FREE_LIST_PREFIX+i.first);
+		char temp[BLOCK_SIZE];
+		for (int j = 0; j < BLOCK_SIZE; j++) {
+			temp[j] = '0';
+		}
+		for (auto j : free_list[i.first]) {
+			temp[j] = '1';
+		}
+		free_stream.write(temp, BLOCK_SIZE);
+		free_stream.close();
+	}
+	catalog_stream.close();
 }
 
 
@@ -86,7 +112,11 @@ void BufferPool::createSchema(const Schema& src_schema) {
 		throw SchemaDuplication();
 	}
 	schema_map.emplace(src_schema.name(), src_schema);
+	for (int i = 0; i < BLOCK_SIZE; i++) {
+		free_list[src_schema.name()].push_back(i);
+	}
 	ofstream(FILE_PREFIX + src_schema.name()) << string(BLOCK_SIZE, 0);
+	ofstream(FREE_LIST_PREFIX + src_schema.name()) << string(BLOCK_SIZE, '1');
 }
 
 void BufferPool::dropSchema(const string& src_schema_name) {
@@ -107,7 +137,8 @@ void BufferPool::dropSchema(const string& src_schema_name) {
 	if (schema_map.find(src_schema_name) != schema_map.end()) {
 		schema_map.erase(schema_map.find(src_schema_name));
 	}
-	remove(src_schema_name.c_str());
+	remove((FILE_PREFIX + src_schema_name).c_str());
+	remove((FREE_LIST_PREFIX + src_schema_name).c_str());
 }
 
 int BufferPool::schemaBlockNumber(const string& src_file_name) const {
@@ -135,6 +166,9 @@ const Schema& BufferPool::operator[](const string& src_schema_name) const {
 }
 
 Type BufferPool::fetchType(const string& src_schema_name, const string& src_attr_name) const {
+	if (schema_map.find(src_schema_name) == schema_map.end()) {
+		throw SchemaError();
+	}
 	auto temp = schema_map.find(src_schema_name)->second;
 	auto name_list = temp.nameList();
 	auto type_list = temp.typeList();

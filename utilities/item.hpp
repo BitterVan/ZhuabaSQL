@@ -25,4 +25,6 @@ class Item {
 		bool operator>(const Item&) const;
 		BitStream toBit() const;
 		bool holdNull() const;
+
+		friend class Tuple;
 };
