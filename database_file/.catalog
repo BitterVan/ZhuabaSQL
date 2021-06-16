@@ -1,4 +1,3 @@
-3
-students 5 id name credit score dept_name 2 40 2 40 0 4 1 8 2 40 id
-0 1 489478656 -67822175 489478656 -67822175
+2
 courses 3 id name credit 2 10 2 40 0 4 id
+students 5 id name credit score dept_name 2 40 2 40 0 4 1 8 2 40 id

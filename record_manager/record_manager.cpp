@@ -41,12 +41,16 @@ void RecordManager::insertTuple(const string& src_schema_name, const vector<stri
 			break;
 		}
 	}
-	for (int i = 0; i <= buffer_pool.schemaBlockNumber(src_schema_name); i++) {
+	int cnt = 0;
+	for (int i = buffer_pool.schemaBlockNumber(src_schema_name) - 1; i >= 0; i--) {
+		cnt++;
+		if (cnt > 2) break;
 		if (!buffer_pool[BlockSpecifier(src_schema_name, i)].isFull()) {
 			buffer_pool[BlockSpecifier(src_schema_name, i)].insertTuple(Tuple(buffer_pool[src_schema_name], items));
-			break;
+			return;
 		}
 	}
+	buffer_pool[BlockSpecifier(src_schema_name, buffer_pool.schemaBlockNumber(src_schema_name))].insertTuple(Tuple(buffer_pool[src_schema_name], items));
 } 
 
 void RecordManager::deleteTuple(const string& src_schema_name, const vector<Requirement>& src_requirements) {

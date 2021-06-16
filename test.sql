@@ -198,5 +198,3 @@ insert into students values ('319', '123', 10, 10, '123');
 insert into students values ('320', '123', 10, 10, '123');
 insert into students values ('321', '123', 10, 10, '123');
 insert into students values ('322', '123', 10, 10, '123');
-insert into students values ('323', '123', 10, 10, '123');
-insert into students values ('324', '123', 10, 10, '123');
