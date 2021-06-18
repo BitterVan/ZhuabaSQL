@@ -88,3 +88,7 @@ string Schema::toString() const {
 string Schema::primaryKey() const {
 	return primary_key;
 }
+
+string Schema::fisrtAttribute() const {
+	return attribute_name[0];
+}

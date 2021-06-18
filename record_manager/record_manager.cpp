@@ -7,7 +7,7 @@ RecordManager::RecordManager(BufferPool& src_buffer) : buffer_pool(src_buffer) {
 
 RecordManager::~RecordManager() = default;
 
-void RecordManager::insertTuple(const string& src_schema_name, const vector<string>& src_tuple_vals) {
+TupleSpecifier RecordManager::insertTuple(const string& src_schema_name, const vector<string>& src_tuple_vals) {
 	auto primary_key = buffer_pool[src_schema_name].primaryKey();
 	auto primary_type = buffer_pool.fetchType(src_schema_name, primary_key);
 	auto name_list = buffer_pool[src_schema_name].nameList();
@@ -52,11 +52,11 @@ void RecordManager::insertTuple(const string& src_schema_name, const vector<stri
 	// }
 
 	int first_free = buffer_pool.free_list[src_schema_name].front();
-	buffer_pool[BlockSpecifier(src_schema_name, first_free)].insertTuple(Tuple(buffer_pool[src_schema_name], items));
+	int pos = buffer_pool[BlockSpecifier(src_schema_name, first_free)].insertTuple(Tuple(buffer_pool[src_schema_name], items));
 	if (buffer_pool[BlockSpecifier(src_schema_name, first_free)].isFull()) {
 		buffer_pool.free_list[src_schema_name].pop_front();
 	}
-
+	return TupleSpecifier(src_schema_name, first_free, pos);
 	// buffer_pool[BlockSpecifier(src_schema_name, buffer_pool.schemaBlockNumber(src_schema_name))].insertTuple(Tuple(buffer_pool[src_schema_name], items));
 } 
 

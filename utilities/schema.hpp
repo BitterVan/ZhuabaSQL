@@ -25,4 +25,5 @@ class Schema {
 		string primaryKey() const;
 		string toString() const;
 		void _debug_show_info() const;
+		string fisrtAttribute() const;
 };

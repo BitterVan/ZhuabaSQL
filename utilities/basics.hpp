@@ -36,6 +36,11 @@ string str2str(const string& src_stirng);
 
 const int INVALID_INT = -2147483648;
 const double INVALID_DOUBLE = -2147483648;
+const int INVALID_TUPLE_NUMBER = -10086;
 const string INVALID_STRING = ".v";
 const string FILE_PREFIX = "database_file/";
 const string FREE_LIST_PREFIX = "database_file/.";
+const string INVALID_PRIMARY = "ghdhfdksjhf";
+const char PARENT_TAG = 'p';
+const char PREVIOUS_TAG = 'l';
+const char NEXT_TAG = 'n';

@@ -3,6 +3,7 @@
 #include "bit_stream.hpp"
 #include "requirement.hpp"
 #include "schema.hpp"
+#include "tuple_specifier.hpp"
 #include <utility>
 using namespace std;
 
@@ -26,4 +27,5 @@ class Tuple {
 		void makeInvalid();
 		void _debug_show_info() const;
 		bool _debug_hold_illegal() const;
+		bool operator<(const Tuple&) const;
 };

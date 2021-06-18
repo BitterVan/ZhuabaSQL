@@ -20,11 +20,14 @@ class Block {
 		Block() = delete;
 		~Block();
 		vector<Tuple> selectTuple(const vector<Requirement>&) const;
-		void insertTuple(const Tuple&);
+		int insertTuple(const Tuple&);
+		void orderedInsert(const Tuple&);
 		void deleteTuple(const vector<Requirement>&);
 		void clean();
 		bool isFull() const;
 		string schemaName() const;
+		void flowInto(Block&);
+		bool holdingLeaf() const;
 		// void pin();
 		// void unpin();
 

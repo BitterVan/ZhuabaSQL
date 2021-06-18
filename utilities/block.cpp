@@ -1,22 +1,6 @@
 #include "block.hpp"
 using namespace	std;
 
-// int min(int a, int b) {
-// 	if (a < b) {
-// 		return a;
-// 	} else {
-// 		return b;
-// 	}
-// }
-
-// int max(int a, int b) {
-// 	if (a < b) {
-// 		return b;
-// 	} else {
-// 		return a;
-// 	}
-// }
-
 void Block::writeBack() const {
 	if (!dirty) {
 		return;
@@ -106,12 +90,13 @@ vector<Tuple> Block::selectTuple(const vector<Requirement>& src_requirements) co
 	return ret;
 }
 
-void Block::insertTuple(const Tuple& src_tuple) {
+int Block::insertTuple(const Tuple& src_tuple) {
 	dirty = 1;
 	if (src_tuple._debug_hold_illegal()) {
 		src_tuple._debug_show_info();
 	}
 	tuple_list.push_back(src_tuple);
+	return tuple_list.size() - 1;
 }
 
 void Block::deleteTuple(const vector<Requirement>& src_requirements) {
@@ -131,4 +116,25 @@ bool Block::isFull() const {
 
 string Block::schemaName() const {
 	return block_schema.name();
+}
+
+void Block::orderedInsert(const Tuple& src_tuple) {
+	auto pos = lower_bound(tuple_list.begin() + 2, tuple_list.end(), src_tuple);
+	tuple_list.insert(pos, src_tuple);
+}
+
+bool Block::holdingLeaf() const {
+	vector<string> temp;
+	temp.push_back("tuple_number");
+	return tuple_list.size() > 2 && tuple_list[2].valueList(temp)[0].toString() != to_string(INVALID_TUPLE_NUMBER);
+}
+
+void Block::flowInto(Block& des_block) {
+	des_block.tuple_list.push_back(tuple_list[0]);
+	// des_block.tuple_list.push_back(tuple_list[1]);
+	if (holdingLeaf()) {
+
+	} else {
+
+	}
 }

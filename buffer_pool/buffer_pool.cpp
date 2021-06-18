@@ -180,3 +180,19 @@ Type BufferPool::fetchType(const string& src_schema_name, const string& src_attr
 	throw NoMatchingAttribute();
 	return Type::INT;
 }
+
+int BufferPool::fetchLength(const string& src_schema_name, const string& src_attr_name) const {
+	if (schema_map.find(src_schema_name) == schema_map.end()) {
+		throw SchemaError();
+	}
+	auto temp = schema_map.find(src_schema_name)->second;
+	auto name_list = temp.nameList();
+	auto length_list = temp.lengthList();
+	for (int i = 0; i < name_list.size(); i++) {
+		if (name_list[i] == src_attr_name) {
+			return length_list[i];
+		}
+	}
+	throw NoMatchingAttribute();
+	return 0;
+}
