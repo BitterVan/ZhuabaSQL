@@ -28,4 +28,6 @@ class Tuple {
 		void _debug_show_info() const;
 		bool _debug_hold_illegal() const;
 		bool operator<(const Tuple&) const;
+		
+		friend class Block;
 };

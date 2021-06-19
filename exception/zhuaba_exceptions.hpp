@@ -47,3 +47,8 @@ class NoMatchingAttribute : public exception {
 		const char* what() const throw();
 };
 
+class DuplicantUnique : public exception {
+	public:
+		const char* what() const throw();
+};
+

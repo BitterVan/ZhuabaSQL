@@ -236,6 +236,7 @@ void Interpreter::interpret(string s){
             string para=s.substr(s.find("("),s.size()-s.find("("));
             vector <Attribute> attr;
             vector<string> attr_names;
+            vector<string> unique_names;
             string line = getline(para,0);
             int i=0;
             Type data_type;
@@ -248,7 +249,10 @@ void Interpreter::interpret(string s){
                 if(s2!="out of range") datalen = atoi(s2.c_str());
                 bool unique = false;
                 string s3=getword(line,3);
-                if(s3=="unique") unique=true;
+                if(s3=="unique") {
+                    unique = true;
+                    unique_names.push_back(name);
+                }
                 if (datatype == "int") {
                     data_type = Type::INT;
                     datalen = sizeof(int);
@@ -268,8 +272,9 @@ void Interpreter::interpret(string s){
             }
             if(getword(line,0)=="primary"){
                 primarykey=getword(line,2);
+                unique_names.push_back(primarykey);
             }
-            api->createTable(tablename, attr_names, attr, primarykey);
+            api->createTable(tablename, attr_names, attr, primarykey, unique_names);
         } else if(getword(s,1) == "index"){
             string indexname=getword(s,2);
             string tablename=getword(s,4);

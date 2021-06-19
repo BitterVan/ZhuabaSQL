@@ -21,10 +21,16 @@ Schema::Schema(const string& src_string) {
 		attribute_map.emplace(attribute_name[i], Attribute(Type(temp_type), temp_len));
 	}
 	src_stream >> primary_key;
+	int n;
+	src_stream >> n;
+	for (int i = 0; i < n; i++) {
+		src_stream >> temp;
+		unique_name.push_back(temp);
+	}
 } 
 
-Schema::Schema(const string& src_schema_name, const vector<string>& src_name, const vector<Attribute>& src_map, const string& src_primary_key) :
-schema_name(src_schema_name), attribute_name(src_name), primary_key(src_primary_key) {
+Schema::Schema(const string& src_schema_name, const vector<string>& src_name, const vector<Attribute>& src_map, const string& src_primary_key, const vector<string>& src_unique_name) :
+schema_name(src_schema_name), attribute_name(src_name), primary_key(src_primary_key), unique_name(src_unique_name) {
 	for (int i = 0; i < attribute_name.size(); i++) {
 		attribute_map.emplace(src_name[i], src_map[i]);
 	}
@@ -81,7 +87,11 @@ string Schema::toString() const {
 		ret += to_string(int(attribute_map.find(i)->second.attributeType())) + " ";
 		ret += to_string(int(attribute_map.find(i)->second.attributeLength())) + " ";
 	}
-	ret += primary_key;
+	ret += primary_key + " ";
+	ret += to_string(unique_name.size()) + " ";
+	for (auto i : unique_name) {
+		ret += i + " ";
+	}
 	return ret;
 }
 
@@ -91,4 +101,8 @@ string Schema::primaryKey() const {
 
 string Schema::fisrtAttribute() const {
 	return attribute_name[0];
+}
+
+vector<string> Schema::uniqueList() const {
+	return unique_name;
 }

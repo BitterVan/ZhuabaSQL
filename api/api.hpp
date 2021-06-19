@@ -19,7 +19,7 @@ class API {
 		API(CatalogManager&, RecordManager&, UI&);
 		~API();
 
-		void createTable(const string&, const vector<string>&, const vector<Attribute>&, const string&);
+		void createTable(const string&, const vector<string>&, const vector<Attribute>&, const string&, const vector<string>&);
 		void dropTable(const string&);
 		void createIndex(const string&, const string&, const string&);
 		void dropIndex(const string&);

@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <cstdio>
 #include <sstream>
+#include <climits>
 #include "../exception/zhuaba_exceptions.hpp"
 using namespace std;
 
@@ -24,7 +25,7 @@ enum class Operator {EQ, NE, LT, LE, GT, GE};
 const int BLOCK_SIZE = 4096;
 const int MAX_CAPACITY = 1024;
 const int REAL_SIZE = 3072;
-const int BUFFER_CAPACITY = 2;
+const int BUFFER_CAPACITY = 1024;
 
 const string CATALOG_FILE = ".catalog";
 
@@ -41,6 +42,16 @@ const string INVALID_STRING = ".v";
 const string FILE_PREFIX = "database_file/";
 const string FREE_LIST_PREFIX = "database_file/.";
 const string INVALID_PRIMARY = "ghdhfdksjhf";
-const char PARENT_TAG = 'p';
-const char PREVIOUS_TAG = 'l';
-const char NEXT_TAG = 'n';
+const string PARENT_STRING = "_parent";
+const string PREVIOUS_STRING = "_previous";
+const int PARENT_INT = -2147483647;
+const int PREVIOUS_INT = 2147483646;
+const double PARENT_DOUBLE = -2147483646;
+const double PREVIOUS_DOUBLE = 2147483645;
+const string MIN_STRING = "\0";
+const int MIN_INT = -2147483648;
+const int MIN_DOUBLE = -2147483648;
+const int MIN_PAGE_NUMBER = -1;
+
+const string ROOT_PARENT_FILE_NAME = "_root";
+const int ROOT_PARENT_PAGE_NUMBER = -1;

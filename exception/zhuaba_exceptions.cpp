@@ -36,3 +36,7 @@ const char* PrimaryNull::what() const throw() {
 const char* NoMatchingAttribute::what() const throw() {
 	return "No such attribute!";
 }
+
+const char* DuplicantUnique::what() const throw() {
+	return "Duplicant unique values!";
+}

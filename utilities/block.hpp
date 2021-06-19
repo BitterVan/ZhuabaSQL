@@ -22,12 +22,21 @@ class Block {
 		vector<Tuple> selectTuple(const vector<Requirement>&) const;
 		int insertTuple(const Tuple&);
 		void orderedInsert(const Tuple&);
-		void deleteTuple(const vector<Requirement>&);
+		vector<Tuple> deleteTuple(const vector<Requirement>&);
 		void clean();
 		bool isFull() const;
 		string schemaName() const;
 		void flowInto(Block&);
 		bool holdingLeaf() const;
+		BlockSpecifier findPosition(const string&, const Tuple&) const;
+		BlockSpecifier parentPosition() const;
+		BlockSpecifier previousPosition() const;
+		Tuple parentTuple() const;
+		bool holdRoot() const;
+		Tuple goingUpTuple() const;
+		void commitDad(const BlockSpecifier&);
+		
+		friend class IndexManager;
 		// void pin();
 		// void unpin();
 

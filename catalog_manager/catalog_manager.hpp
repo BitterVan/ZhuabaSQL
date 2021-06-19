@@ -12,7 +12,7 @@ class CatalogManager {
 		CatalogManager(BufferPool&);
 		~CatalogManager();
 
-		void createTable(const string&, const vector<string>&, const vector<Attribute>&, const string&);
+		void createTable(const string&, const vector<string>&, const vector<Attribute>&, const string&, const vector<string>&);
 		void dropTable(const string&);
 		Type fetchType(const string&, const string&) const;
 		vector<string> nameList(const string&) const;

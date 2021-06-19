@@ -196,3 +196,7 @@ int BufferPool::fetchLength(const string& src_schema_name, const string& src_att
 	throw NoMatchingAttribute();
 	return 0;
 }
+
+Block& BufferPool::fetchNew(const string& src_schema_name) {
+	return (*this)[BlockSpecifier(src_schema_name, schemaBlockNumber(src_schema_name))];
+}

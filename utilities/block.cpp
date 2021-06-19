@@ -99,14 +99,17 @@ int Block::insertTuple(const Tuple& src_tuple) {
 	return tuple_list.size() - 1;
 }
 
-void Block::deleteTuple(const vector<Requirement>& src_requirements) {
+vector<Tuple> Block::deleteTuple(const vector<Requirement>& src_requirements) {
+	vector<Tuple> ret;
 	dirty = 1;
 	for (auto i = tuple_list.begin(); i != tuple_list.end(); i++) {
 		if (i->meetRequirement(src_requirements)) {
 			// i = tuple_list.erase(i) - 1;
+			ret.push_back(*i);
 			i->makeInvalid();
 		}
 	}
+	return ret;
 }
 
 
@@ -119,22 +122,85 @@ string Block::schemaName() const {
 }
 
 void Block::orderedInsert(const Tuple& src_tuple) {
-	auto pos = lower_bound(tuple_list.begin() + 2, tuple_list.end(), src_tuple);
+	dirty = 1;
+	auto pos = upper_bound(tuple_list.begin() + 2, tuple_list.end(), src_tuple);
 	tuple_list.insert(pos, src_tuple);
 }
 
 bool Block::holdingLeaf() const {
 	vector<string> temp;
 	temp.push_back("tuple_number");
-	return tuple_list.size() > 2 && tuple_list[2].valueList(temp)[0].toString() != to_string(INVALID_TUPLE_NUMBER);
+	return tuple_list.size() <= 2 || tuple_list[2].valueList(temp)[0].toString() != to_string(INVALID_TUPLE_NUMBER);
 }
 
 void Block::flowInto(Block& des_block) {
+	dirty = 1;
+	des_block.dirty = 1;
+	// this is the tuple pointing the parent
 	des_block.tuple_list.push_back(tuple_list[0]);
 	// des_block.tuple_list.push_back(tuple_list[1]);
+	// if current block holds leafs instead of the internal nodes;
+	// this number is the begin number of the second block
+	int split_pos = (des_block.tuple_list.size() - 2) / 2 + 3;
 	if (holdingLeaf()) {
-
+		vector<string> attrs;
+		// insert the end of splited block's tuple space to the second of the tuple list
+		attrs.push_back("key");
+		attrs.push_back("file_name");
+		auto temp = tuple_list[1].valueList(attrs);
+		temp.emplace_back(this->specifier.pageNumber());
+		temp.emplace_back(split_pos - 1);
+		des_block.tuple_list.emplace_back(this->block_schema, temp);
+		move(tuple_list.begin() + split_pos, tuple_list.end(), back_inserter(des_block.tuple_list));
 	} else {
-
+		move(tuple_list.begin() + split_pos, tuple_list.end(), back_inserter(des_block.tuple_list));
 	}
+}
+
+BlockSpecifier Block::parentPosition() const {
+	vector<string> attrs;
+	attrs.push_back("file_name");
+	attrs.push_back("page_number");
+	auto temp = tuple_list[0].valueList(attrs);
+	return BlockSpecifier(temp[0].string_val, temp[1].int_val);
+}
+
+BlockSpecifier Block::previousPosition() const {
+	vector<string> attrs;
+	attrs.push_back("file_name");
+	attrs.push_back("page_number");
+	auto temp = tuple_list[1].valueList(attrs);
+	return BlockSpecifier(temp[0].string_val, temp[1].int_val);
+}
+
+BlockSpecifier Block::findPosition(const string& src_attr_name, const Tuple& src_tuple) const {
+	auto temp_pos = upper_bound(tuple_list.begin() + 2, tuple_list.end(), src_tuple);
+	vector<string> attrs;
+	attrs.push_back("file_name");
+	attrs.push_back("page_number");
+	auto temp = (temp_pos-1)->valueList(attrs);
+	return BlockSpecifier(temp[0].string_val, temp[1].int_val);
+}
+
+bool Block::holdRoot() const {
+	return (tuple_list[0].tuple_vals.find("file_name")->second.toString() == ROOT_PARENT_FILE_NAME);
+}
+
+Tuple Block::goingUpTuple() const {
+	vector<Item> temp;
+	temp.push_back(tuple_list[2].tuple_vals.find("key")->second);
+	temp.emplace_back(this->specifier.schemaName());
+	temp.emplace_back(this->specifier.pageNumber());
+	temp.emplace_back(INVALID_TUPLE_NUMBER);
+	return Tuple(block_schema, temp);
+}
+
+void Block::commitDad(const BlockSpecifier& src_specifier) {
+	dirty = 1;
+	vector<Item> temp;
+	temp.push_back(tuple_list[0].tuple_vals.find("key")->second);
+	temp.emplace_back(src_specifier.schemaName());
+	temp.emplace_back(src_specifier.pageNumber());
+	temp.emplace_back(INVALID_TUPLE_NUMBER);
+	tuple_list[0] = Tuple(block_schema, temp);
 }

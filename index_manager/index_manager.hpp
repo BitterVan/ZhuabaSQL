@@ -15,5 +15,5 @@ class IndexManager {
 		~IndexManager();
 		bool holdIndex(const string&, const string&) const;
 		void createIndex(const string&, const string&, const string&);
-		void insertIndex(const Item&, const TupleSpecifier&);
+		void insertIndex(const string&, const string&, const Item&, const TupleSpecifier&);
 };
