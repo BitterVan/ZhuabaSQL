@@ -6,9 +6,9 @@ void Block::writeBack() const {
 		return;
 	}
 	fstream write_file(FILE_PREFIX + specifier.schemaName());
-	if (specifier.schemaName() == "studentsid") {
-		cerr << "debuging" << endl;
-	}
+	// if (specifier.schemaName() == "studentsid") {
+	// 	cerr << "debuging" << endl;
+	// }
 	write_file.seekp(specifier.pageNumber() * BLOCK_SIZE);
 	char page[BLOCK_SIZE];
 	for (int i = 0; i < MAX_CAPACITY; i++) {
@@ -20,9 +20,9 @@ void Block::writeBack() const {
 
 	char *pos = page + MAX_CAPACITY;
 	for (int i = 0; i < tuple_list.size(); i++) {
-		if (tuple_list[i]._debug_hold_illegal()) {
-			tuple_list[i]._debug_show_info();
-		}
+		// if (tuple_list[i]._debug_hold_illegal()) {
+		// 	tuple_list[i]._debug_show_info();
+		// }
 		memcpy(pos, tuple_list[i].toBit().begin(), block_schema.bitLength());
 		pos += block_schema.bitLength();
 	}
@@ -67,9 +67,9 @@ Block::Block(const Schema& src_schema, const BlockSpecifier& src_block_spec) : b
 		if ((int)valid[i] > 0) {
 			memcpy(temp.begin(), data + i*block_schema.bitLength(), block_schema.bitLength());
 			auto temp_tuple = Tuple(block_schema, temp);
-			if (temp_tuple._debug_hold_illegal()) {
-				temp_tuple._debug_show_info();
-			}
+			// if (temp_tuple._debug_hold_illegal()) {
+			// 	temp_tuple._debug_show_info();
+			// }
 			tuple_list.push_back(temp_tuple);
 		} else {
 			break;
@@ -95,9 +95,9 @@ vector<Tuple> Block::selectTuple(const vector<Requirement>& src_requirements) co
 
 int Block::insertTuple(const Tuple& src_tuple) {
 	dirty = 1;
-	if (src_tuple._debug_hold_illegal()) {
-		src_tuple._debug_show_info();
-	}
+	// if (src_tuple._debug_hold_illegal()) {
+	// 	src_tuple._debug_show_info();
+	// }
 	tuple_list.push_back(src_tuple);
 	return tuple_list.size() - 1;
 }

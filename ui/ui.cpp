@@ -25,8 +25,8 @@ void UI::plotTable(const vector<string>& src_name_list, const vector<Type>& src_
 	switch (src_tuple_list.size())
 	{
 	case 0:
-		return;
 		cout << "Empty set" << endl;
+		return;
 		break;
 	case 1:
 		// cout << "1 record selected" << endl;
