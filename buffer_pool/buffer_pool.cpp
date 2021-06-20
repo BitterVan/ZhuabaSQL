@@ -200,3 +200,13 @@ int BufferPool::fetchLength(const string& src_schema_name, const string& src_att
 Block& BufferPool::fetchNew(const string& src_schema_name) {
 	return (*this)[BlockSpecifier(src_schema_name, schemaBlockNumber(src_schema_name))];
 }
+
+vector<Tuple> BufferPool::directFetch(const vector<TupleSpecifier>& src_specifiers){
+	vector<Tuple> ret;
+	for (auto i : src_specifiers) {
+		auto j = BlockSpecifier(i.file_name, i.page_number);
+		Block& temp =  (*this)[j];
+		ret.push_back(temp.tuple_list[i.tuple_number]);
+	}	
+	return ret;
+}

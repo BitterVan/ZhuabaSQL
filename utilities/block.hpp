@@ -7,7 +7,6 @@ using namespace std;
 class Block {
 	private:
 		const Schema& block_schema;
-		vector<Tuple> tuple_list;
 		int capacity;
 		// bool pinned;
 		bool dirty;
@@ -15,6 +14,7 @@ class Block {
 		void writeBack() const;
 
 	public:
+		vector<Tuple> tuple_list;
 		Block(const Schema&, const BlockSpecifier&);
 		Block(const Block&);
 		Block() = delete;
@@ -37,6 +37,7 @@ class Block {
 		void commitDad(const BlockSpecifier&);
 		
 		friend class IndexManager;
+		friend class BufferPool;
 		// void pin();
 		// void unpin();
 

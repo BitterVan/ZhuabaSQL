@@ -16,4 +16,6 @@ class Requirement {
 		~Requirement();
 
 		friend class Tuple;
+		friend class IndexManager;
+		friend class API;
 };

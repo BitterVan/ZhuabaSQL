@@ -1,4 +1,5 @@
 create table students (id char (10), name char(40), credit int, score float, dept_name char (40), primary key (id));
+create index test_index on students(id);
 insert into students values ('123', '123', 10, 10, '123');
 insert into students values ('124', '123', 10, 10, '123');
 insert into students values ('125', '123', 10, 10, '123');

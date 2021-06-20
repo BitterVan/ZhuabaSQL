@@ -2,6 +2,7 @@
 #include "../record_manager/record_manager.hpp"
 #include "../catalog_manager/catalog_manager.hpp"
 #include "../ui/ui.hpp"
+#include "../index_manager/index_manager.hpp"
 #include <vector>
 using namespace std;
 
@@ -11,12 +12,12 @@ using namespace std;
 class API {
 	private:
 		CatalogManager& catalog_manager;
-		// IndexManager& index_manager;
+		IndexManager& index_manager;
 		RecordManager& record_manager;
 		UI& ui;
 
 	public:
-		API(CatalogManager&, RecordManager&, UI&);
+		API(CatalogManager&, IndexManager&, RecordManager&, UI&);
 		~API();
 
 		void createTable(const string&, const vector<string>&, const vector<Attribute>&, const string&, const vector<string>&);

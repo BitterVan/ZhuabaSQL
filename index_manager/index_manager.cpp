@@ -10,8 +10,8 @@ buffer_pool(src_buffer_pool), catalog_manager(src_catalog_manager), record_manag
 	string name, index_name;
 	int root_pos;
 	for (int i = 0; i < n; i++) {
-		temp >> name >> index_name >> root_pos;
-		index_map.emplace(name, index_name);
+		temp >> index_name >> name >> root_pos;
+		index_map.emplace(index_name, name);
 		root_position.emplace(name, root_pos);
 	}	
 	temp.close();
@@ -22,9 +22,14 @@ IndexManager::~IndexManager() {
 	temp << index_map.size() << endl;
 	for (auto i : index_map) {
 		temp << i.first << " " << i.second << " ";
-		temp << root_position.find(i.first)->second << endl;
+		temp << root_position.find(i.second)->second << endl;
 	}
 	temp.close();
+}
+
+void IndexManager::dropIndex(const string& src_index_name) {
+	catalog_manager.dropTable(index_map[src_index_name]);
+	index_map.erase(index_map.find(src_index_name));
 }
 
 bool IndexManager::holdIndex(const string& src_schema_name, const string& src_attr_name) const {
@@ -51,7 +56,7 @@ void IndexManager::createIndex(const string& src_schema_name, const string& src_
 	vector<string> name_list;
 	name_list.push_back("key");
 	name_list.push_back("file_name");
-	name_list.push_back("block_number");
+	name_list.push_back("page_number");
 	name_list.push_back("tuple_number");
 	catalog_manager.createTable(real_name, name_list, attr_list, INVALID_PRIMARY, vector<string>());
 	vector<Item> first_val;
@@ -124,4 +129,43 @@ void IndexManager::insertIndex(const string& src_schema_name, const string& src_
 			break;
 		}
 	}
+}
+
+vector<Tuple> IndexManager::selectTuple(const string& src_schema_name, const Requirement& src_requirement) {
+	string attr_name = src_requirement.attribute_name;
+	string real_name = src_schema_name + attr_name;	
+	vector<Item> attrs;
+	attrs.push_back(src_requirement.item);
+	attrs.push_back(src_schema_name);
+	attrs.push_back(INVALID_TUPLE_NUMBER);
+	attrs.push_back(INVALID_TUPLE_NUMBER);
+	Tuple tuple = Tuple(buffer_pool[real_name], attrs);
+	Block* now = &(buffer_pool[BlockSpecifier(real_name, root_position[real_name])]);
+	while (!now->holdingLeaf()) {
+		now = &(buffer_pool[now->findPosition(attr_name, tuple)]);
+	}
+	vector<Tuple> ret;
+	while (now->specifier.pageNumber() != MIN_PAGE_NUMBER) {
+		vector<TupleSpecifier> spec_list;
+		vector<string> attr;
+		attr.push_back("file_name");
+		attr.push_back("page_number");
+		attr.push_back("tuple_number");
+		for (auto i = now->tuple_list.begin() + 2; i != now->tuple_list.end(); i++) {
+			auto temp = i->valueList(attr);
+			spec_list.emplace_back(temp[0].toString(), str2int(temp[1].toString()), str2int(temp[2].toString()));
+		}
+		auto temp = buffer_pool.directFetch(spec_list);
+		vector<Tuple> ttmp;
+		for (auto i : temp) {
+			if (i.meet(src_requirement)) {
+				ttmp.push_back(i);
+			}
+		}
+		if (ttmp.size() == 0) {
+			break;
+		}
+		move(ttmp.begin(), ttmp.end(), back_inserter(ret));
+	}
+	return ret;
 }

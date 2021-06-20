@@ -24,6 +24,7 @@ class BufferPool {
 		Type fetchType(const string&, const string&) const;
 		int fetchLength(const string&, const string&) const;
 		Block& fetchNew(const string&);
+		vector<Tuple> directFetch(const vector<TupleSpecifier>&);
 
 		unordered_map<string, list<int>> free_list;
 		unordered_map<string, unordered_map<Item, int>> duplicant_map;

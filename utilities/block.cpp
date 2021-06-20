@@ -6,6 +6,9 @@ void Block::writeBack() const {
 		return;
 	}
 	fstream write_file(FILE_PREFIX + specifier.schemaName());
+	if (specifier.schemaName() == "studentsid") {
+		cerr << "debuging" << endl;
+	}
 	write_file.seekp(specifier.pageNumber() * BLOCK_SIZE);
 	char page[BLOCK_SIZE];
 	for (int i = 0; i < MAX_CAPACITY; i++) {
@@ -136,12 +139,12 @@ bool Block::holdingLeaf() const {
 void Block::flowInto(Block& des_block) {
 	dirty = 1;
 	des_block.dirty = 1;
-	// this is the tuple pointing the parent
+	// this is the tuple pointing the p2arent
 	des_block.tuple_list.push_back(tuple_list[0]);
 	// des_block.tuple_list.push_back(tuple_list[1]);
 	// if current block holds leafs instead of the internal nodes;
 	// this number is the begin number of the second block
-	int split_pos = (des_block.tuple_list.size() - 2) / 2 + 3;
+	int split_pos = (this->tuple_list.size() - 2) / 2 + 3;
 	if (holdingLeaf()) {
 		vector<string> attrs;
 		// insert the end of splited block's tuple space to the second of the tuple list
@@ -152,8 +155,10 @@ void Block::flowInto(Block& des_block) {
 		temp.emplace_back(split_pos - 1);
 		des_block.tuple_list.emplace_back(this->block_schema, temp);
 		move(tuple_list.begin() + split_pos, tuple_list.end(), back_inserter(des_block.tuple_list));
+		tuple_list.erase(tuple_list.begin() + split_pos, tuple_list.end());
 	} else {
 		move(tuple_list.begin() + split_pos, tuple_list.end(), back_inserter(des_block.tuple_list));
+		tuple_list.erase(tuple_list.begin() + split_pos, tuple_list.end());
 	}
 }
 
@@ -183,7 +188,9 @@ BlockSpecifier Block::findPosition(const string& src_attr_name, const Tuple& src
 }
 
 bool Block::holdRoot() const {
-	return (tuple_list[0].tuple_vals.find("file_name")->second.toString() == ROOT_PARENT_FILE_NAME);
+	auto temp = tuple_list[0].tuple_vals.find("file_name")->second.string_val;
+	auto ttmp = ROOT_PARENT_FILE_NAME;
+	return (tuple_list[0].tuple_vals.find("file_name")->second.string_val == ROOT_PARENT_FILE_NAME);
 }
 
 Tuple Block::goingUpTuple() const {
@@ -193,6 +200,10 @@ Tuple Block::goingUpTuple() const {
 	temp.emplace_back(this->specifier.pageNumber());
 	temp.emplace_back(INVALID_TUPLE_NUMBER);
 	return Tuple(block_schema, temp);
+}
+
+Tuple Block::parentTuple() const {
+	return tuple_list[0];
 }
 
 void Block::commitDad(const BlockSpecifier& src_specifier) {

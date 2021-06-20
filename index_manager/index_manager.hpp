@@ -16,4 +16,6 @@ class IndexManager {
 		bool holdIndex(const string&, const string&) const;
 		void createIndex(const string&, const string&, const string&);
 		void insertIndex(const string&, const string&, const Item&, const TupleSpecifier&);
+		vector<Tuple> selectTuple(const string&, const Requirement&);
+		void dropIndex(const string&);
 };

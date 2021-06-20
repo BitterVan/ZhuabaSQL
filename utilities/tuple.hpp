@@ -30,4 +30,5 @@ class Tuple {
 		bool operator<(const Tuple&) const;
 		
 		friend class Block;
+		friend class IndexManager;
 };

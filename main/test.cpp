@@ -7,8 +7,9 @@ int main() {
 	BufferPool buffer;
 	CatalogManager catalog(buffer);
 	RecordManager record(buffer);
+	IndexManager index(buffer, catalog, record);
 	UI ui;
-	API api(catalog, record, ui);
+	API api(catalog, index, record, ui);
 	Interpreter interpreter(&api);
 	string temp;
 	while (1) {
