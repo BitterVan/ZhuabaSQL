@@ -215,3 +215,13 @@ void Block::commitDad(const BlockSpecifier& src_specifier) {
 	temp.emplace_back(INVALID_TUPLE_NUMBER);
 	tuple_list[0] = Tuple(block_schema, temp);
 }
+
+vector<TupleSpecifier> Block::validSpecifiers() const {
+	vector<TupleSpecifier> ret;
+	for (auto i = tuple_list.begin(); i != tuple_list.end(); i++) {
+		if (i->valid) {
+			ret.push_back(TupleSpecifier(this->schemaName(), this->specifier.pageNumber(), i - tuple_list.begin()));
+		}
+	}
+	return ret;
+}

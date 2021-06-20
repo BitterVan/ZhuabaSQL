@@ -210,3 +210,4 @@ vector<Tuple> BufferPool::directFetch(const vector<TupleSpecifier>& src_specifie
 	}	
 	return ret;
 }
+

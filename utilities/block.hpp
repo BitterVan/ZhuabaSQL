@@ -35,6 +35,7 @@ class Block {
 		bool holdRoot() const;
 		Tuple goingUpTuple() const;
 		void commitDad(const BlockSpecifier&);
+		vector<TupleSpecifier> validSpecifiers() const;
 		
 		friend class IndexManager;
 		friend class BufferPool;

@@ -87,6 +87,13 @@ void IndexManager::createIndex(const string& src_schema_name, const string& src_
 	
 	buffer_pool[BlockSpecifier(real_name, 0)].insertTuple(Tuple(buffer_pool[real_name], first_val));
 	buffer_pool[BlockSpecifier(real_name, 0)].insertTuple(Tuple(buffer_pool[real_name], second_val));
+	auto tuples = record_manager.selectTuple(src_schema_name, vector<Requirement>());
+	vector<string> sub_name_list;
+	sub_name_list.push_back(src_attr_name);
+	auto spec_list = record_manager.fetchAllSpecifier(src_schema_name);
+	for (auto i = tuples.begin(); i != tuples.end(); i++) {
+		insertIndex(src_schema_name, src_attr_name, i->valueList(sub_name_list)[0], spec_list[i-tuples.begin()]);
+	}	
 }
 
 void IndexManager::insertIndex(const string& src_schema_name, const string& src_attr_name, const Item& src_item, const TupleSpecifier& src_specifier) {

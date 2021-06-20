@@ -119,3 +119,16 @@ vector<Tuple> RecordManager::selectTuple(const string& src_schema_name, const ve
 
 	return ret;
 }
+
+vector<TupleSpecifier> RecordManager::fetchAllSpecifier(const string& src_schema_name) {
+	vector<TupleSpecifier> ret;
+	// cerr << buffer_pool.schemaBlockNumber(src_schema_name) << endl;
+	for (int i = 0; i < buffer_pool.schemaBlockNumber(src_schema_name); i++) {
+		auto temp = buffer_pool[BlockSpecifier(src_schema_name, i)].validSpecifiers();
+		// cerr << temp.size() << endl;
+		for (auto j : temp) {
+			ret.push_back(j);
+		}
+	}
+	return ret;
+}
