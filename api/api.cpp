@@ -22,7 +22,7 @@ void API::dropTable(const string& src_schema_name) {
 	catalog_manager.dropTable(src_schema_name);	
 }
 
-vector<Tuple> API::selectTuple(const string& src_schema_name, const vector<Requirement>& src_requirements) const {
+vector<Tuple> API::selectTuple(const string& src_schema_name, const vector<string>& src_attr_names, const vector<Requirement>& src_requirements) const {
 	vector<Tuple> ret;
 	// If the first requirement is EQ, and is in the index
 	if (src_requirements.size() > 0 && index_manager.holdIndex(src_schema_name, src_requirements[0].attribute_name + src_schema_name)&&src_requirements[0].operator_type == Operator::EQ) {
@@ -33,7 +33,11 @@ vector<Tuple> API::selectTuple(const string& src_schema_name, const vector<Requi
 	auto nameList = catalog_manager.nameList(src_schema_name);
 	auto typeList = catalog_manager.typeList(src_schema_name);
 	auto lengthList = catalog_manager.lengthList(src_schema_name);
-	ui.plotTable(nameList, typeList, lengthList, ret, nameList);
+	auto attrs = src_attr_names;
+	if (src_attr_names[0] == "*") {
+		attrs = nameList;
+	}
+	ui.plotTable(nameList, typeList, lengthList, ret, attrs);
 	return ret;
 }
 
@@ -43,42 +47,22 @@ void API::insertTuple(const string& src_schema_name, const vector<string>& src_t
 	auto type_list = catalog_manager.typeList(src_schema_name);
 	for (int i = 0; i < name_list.size(); i++) {
 		if (index_manager.holdIndex(src_schema_name, name_list[i])) {
-				switch (type_list[i])
-				{
-				case Type::INT:
-					index_manager.insertIndex(src_schema_name, name_list[i], Item(str2int(src_tuple_vals[i])), itemp);
-					break;
-				case Type::DOUBLE:
-					index_manager.insertIndex(src_schema_name, name_list[i], Item(str2double(src_tuple_vals[i])), itemp);
-					break;
-				case Type::STRING:
-					index_manager.insertIndex(src_schema_name, name_list[i], Item(str2str(src_tuple_vals[i])), itemp);
-					break;			
-				default:
-					break;
-				}
+			switch (type_list[i])
+			{
+			case Type::INT:
+				index_manager.insertIndex(src_schema_name, name_list[i], Item(str2int(src_tuple_vals[i])), itemp);
+				break;
+			case Type::DOUBLE:
+				index_manager.insertIndex(src_schema_name, name_list[i], Item(str2double(src_tuple_vals[i])), itemp);
+				break;
+			case Type::STRING:
+				index_manager.insertIndex(src_schema_name, name_list[i], Item(str2str(src_tuple_vals[i])), itemp);
+				break;			
+			default:
+				break;
+			}
 		}
 	}
-	// for (auto i : name_list) {
-	// 	if (index_manager.holdIndex(src_schema_name, i)) {
-	// 		for (int j = 0; j < type_list.size(); j++) {
-	// 			switch (type_list[j])
-	// 			{
-	// 			case Type::INT:
-	// 				index_manager.insertIndex(src_schema_name, name_list[j], Item(str2int(src_tuple_vals[j])), itemp);
-	// 				break;
-	// 			case Type::DOUBLE:
-	// 				index_manager.insertIndex(src_schema_name, name_list[j], Item(str2double(src_tuple_vals[j])), itemp);
-	// 				break;
-	// 			case Type::STRING:
-	// 				index_manager.insertIndex(src_schema_name, name_list[j], Item(str2str(src_tuple_vals[j])), itemp);
-	// 				break;			
-	// 			default:
-	// 				break;
-	// 			}
-	// 		}
-	// 	}
-	// }
 }
 
 void API::deleteTuple(const string& src_schema_name, const vector<Requirement>& src_requirements) {

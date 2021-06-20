@@ -24,7 +24,7 @@ class API {
 		void dropTable(const string&);
 		void createIndex(const string&, const string&, const string&);
 		void dropIndex(const string&);
-		vector<Tuple> selectTuple(const string&, const vector<Requirement>&) const;
+		vector<Tuple> selectTuple(const string&, const vector<string>&, const vector<Requirement>&) const;
 		void insertTuple(const string&, const vector<string>&);
 		void deleteTuple(const string&, const vector<Requirement>&);
 		Type fetchType(const string&, const string&) const;
