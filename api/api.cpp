@@ -25,7 +25,7 @@ void API::dropTable(const string& src_schema_name) {
 vector<Tuple> API::selectTuple(const string& src_schema_name, const vector<string>& src_attr_names, const vector<Requirement>& src_requirements) const {
 	vector<Tuple> ret;
 	// If the first requirement is EQ, and is in the index
-	if (src_requirements.size() > 0 && index_manager.holdIndex(src_schema_name, src_requirements[0].attribute_name + src_schema_name)&&src_requirements[0].operator_type == Operator::EQ) {
+	if (src_requirements.size() > 0 && index_manager.holdIndex(src_schema_name, src_schema_name + src_requirements[0].attribute_name) &&src_requirements[0].operator_type == Operator::EQ) {
 		ret = index_manager.selectTuple(src_schema_name, src_requirements[0]);
 	} else {
 		ret = record_manager.selectTuple(src_schema_name, src_requirements);

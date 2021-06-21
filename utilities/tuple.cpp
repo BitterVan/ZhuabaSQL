@@ -65,7 +65,11 @@ BitStream Tuple::toBit() const {
 vector<Item> Tuple::valueList(const vector<string>& src_attr_list) const {
 	vector<Item> ret;
 	for (auto i : src_attr_list) {
-		ret.push_back(tuple_vals.find(i)->second);
+		auto temp = tuple_vals.find(i);
+		if (temp == tuple_vals.end()) {
+			throw NoMatchingAttribute();
+		}
+		ret.push_back(temp->second);
 	}
 	return ret;
 }
