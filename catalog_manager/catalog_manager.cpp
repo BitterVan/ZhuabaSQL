@@ -13,6 +13,7 @@ void CatalogManager::createTable(const string& src_schema_name, const vector<str
 
 void CatalogManager::dropTable(const string& src_schema_name) {
 	buffer_pool.dropSchema(src_schema_name);
+	buffer_pool.duplicant_map[src_schema_name].clear();
 }
 
 Type CatalogManager::fetchType(const string& src_schema_name, const string& src_attr_name) const {

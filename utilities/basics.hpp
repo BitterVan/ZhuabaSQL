@@ -25,7 +25,7 @@ enum class Operator {EQ, NE, LT, LE, GT, GE};
 const int BLOCK_SIZE = 4096;
 const int MAX_CAPACITY = 1024;
 const int REAL_SIZE = 3072;
-const int BUFFER_CAPACITY = 1024;
+const int BUFFER_CAPACITY = 10;
 
 const string CATALOG_FILE = ".catalog";
 
