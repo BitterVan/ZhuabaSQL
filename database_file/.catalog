@@ -1,3 +1,4 @@
-2
-student 4 sno sname sage sgender 2 8 2 16 0 4 2 1 sno 2 sname sno 
+3
+students 5 id name credit score dept_name 2 10 2 40 0 4 1 8 2 40 id 1 id 
 studentsid 4 key file_name page_number tuple_number 2 10 2 10 0 4 0 4 ghdhfdksjhf 0 
+student 4 sno sname sage sgender 2 8 2 16 0 4 2 1 sno 2 sname sno 

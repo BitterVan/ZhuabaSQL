@@ -4,6 +4,7 @@
 using namespace std;
 
 int main() {
+	ios::sync_with_stdio(false);
 	BufferPool buffer;
 	CatalogManager catalog(buffer);
 	RecordManager record(buffer);
@@ -32,7 +33,7 @@ int main() {
 			auto inst_list = api.fetchFile(string(word, 0, word.length()-1));
 			// cerr << "fetch list" << endl;
 			for (auto i : inst_list) {
-				auto start = chrono::system_clock::now();
+				// auto start = chrono::system_clock::now();
 				if (i == "quit;") {
 					return 0;
 				}
@@ -42,11 +43,12 @@ int main() {
 					cerr << exp.what() << endl;
 					continue;
 				}
-				auto end = chrono::system_clock::now();
-				auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
-				cout <<  "Finish execution in " 
-					<< double(duration.count()) * chrono::microseconds::period::num / chrono::microseconds::period::den 
-					<< " seconds (include print time)" << endl;
+				// auto end = chrono::system_clock::now();
+				// auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+				// cout << "hello >>>>>>>>>>>>>>>>>>>>>>>>> hello" << endl;
+				// cout <<  "Finish execution in " 
+				// 	<< double(duration.count()) * chrono::microseconds::period::num / chrono::microseconds::period::den 
+				// 	<< " seconds (include print time)" << endl;
 
 			}
 		}
@@ -55,5 +57,6 @@ int main() {
 		cout <<  "Finish execution in " 
 			<< double(duration.count()) * chrono::microseconds::period::num / chrono::microseconds::period::den 
 			<< " seconds (include print time)" << endl;
+		cout << endl;
 	}
 }

@@ -24,7 +24,9 @@ void API::dropTable(const string& src_schema_name) {
 
 vector<Tuple> API::selectTuple(const string& src_schema_name, const vector<string>& src_attr_names, const vector<Requirement>& src_requirements) const {
 	vector<Tuple> ret;
+	
 	// If the first requirement is EQ, and is in the index
+	auto start = chrono::system_clock::now();
 	if (src_requirements.size() > 0 && index_manager.holdIndex(src_schema_name, src_schema_name + src_requirements[0].attribute_name) &&src_requirements[0].operator_type == Operator::EQ) {
 		ret = index_manager.selectTuple(src_schema_name, src_requirements[0]);
 	} else {
@@ -37,7 +39,12 @@ vector<Tuple> API::selectTuple(const string& src_schema_name, const vector<strin
 	if (src_attr_names[0] == "*") {
 		attrs = nameList;
 	}
+	auto end = chrono::system_clock::now();
 	ui.plotTable(nameList, typeList, lengthList, ret, attrs);
+	auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+	cout <<  "Finish execution in " 
+		<< double(duration.count()) * chrono::microseconds::period::num / chrono::microseconds::period::den 
+		<< " seconds (without print time)" << endl;
 	return ret;
 }
 

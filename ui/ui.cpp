@@ -37,9 +37,15 @@ void UI::plotTable(const vector<string>& src_name_list, const vector<Type>& src_
 	}
 	vector<string> titles;
 	vector<string> new_titles;
-	for (int i = 0; i < src_name_list.size(); i++) {
-		string temp = src_name_list[i];
-		switch (src_type_list[i])
+	vector<Type> new_types;
+	for (int i = 0; i < src_attr_names.size(); i++) {
+		int pos = find(src_name_list.begin(), src_name_list.end(), src_attr_names[i]) - src_name_list.begin();
+		new_types.push_back(src_type_list[pos]);
+	}
+
+	for (int i = 0; i < src_attr_names.size(); i++) {
+		string temp = src_attr_names[i];
+		switch (new_types[i])
 		{
 		case Type::INT:
 			temp += "(int)";
