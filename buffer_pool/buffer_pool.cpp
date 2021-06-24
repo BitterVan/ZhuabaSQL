@@ -69,6 +69,9 @@ Block& BufferPool::operator[](const BlockSpecifier& src_specifier) {
 			return block_map.find(src_specifier)->second;
 		// If there are unpinned blocks
 		} else if (unpinned_list.size()) {
+			if (block_map.find(unpinned_list.back()) == block_map.end()) {
+				cerr << "not match" << endl;
+			}
 			block_map.erase(unpinned_list.back());
 			unpinned_list.pop_back();
 			unpinned_list.push_front(src_specifier);
@@ -139,6 +142,7 @@ void BufferPool::dropSchema(const string& src_schema_name) {
 	}
 	remove((FILE_PREFIX + src_schema_name).c_str());
 	remove((FREE_LIST_PREFIX + src_schema_name).c_str());
+	free_list.erase(src_schema_name);
 }
 
 int BufferPool::schemaBlockNumber(const string& src_file_name) const {
