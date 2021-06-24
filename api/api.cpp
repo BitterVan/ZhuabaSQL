@@ -86,10 +86,25 @@ string API::fetchStatement() const {
 
 vector<string> API::fetchFile(const string& src_file_name) const {
 	vector<string> ret;
-	string temp;
+	string temp, sql;
+	char c;
 	ifstream file_stream(src_file_name);
-	while (getline(file_stream, temp)) {
-		ret.push_back(temp);
+	while (getline(file_stream, sql)) {
+		if(sql.back()!=';'){
+			// sql=sql.substr(0,sql.size()-1);
+			while(sql.back() != ';'){
+				getline(file_stream, temp);
+				if (temp.back() == ';') {
+					sql = sql+temp;
+					break;
+				} else {
+					sql =sql+" ";
+				}
+				// temp=temp.substr(0,temp.size()-1);
+				sql = sql+temp;
+			}
+		}
+		ret.push_back(sql);
 	}
 	file_stream.close();
 	return ret;
