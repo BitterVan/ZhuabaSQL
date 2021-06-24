@@ -43,13 +43,6 @@ int main() {
 					cerr << exp.what() << endl;
 					continue;
 				}
-				// auto end = chrono::system_clock::now();
-				// auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
-				// cout << "hello >>>>>>>>>>>>>>>>>>>>>>>>> hello" << endl;
-				// cout <<  "Finish execution in " 
-				// 	<< double(duration.count()) * chrono::microseconds::period::num / chrono::microseconds::period::den 
-				// 	<< " seconds (include print time)" << endl;
-
 			}
 		}
 		auto end = chrono::system_clock::now();
