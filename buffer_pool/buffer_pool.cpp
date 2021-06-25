@@ -26,6 +26,22 @@ BufferPool::BufferPool() {
 		temp.close();
 	}
 	catalog_stream.close();
+	int n;
+	string name;
+	ifstream sch(FILE_PREFIX + ".real_schema");
+	ifstream ind(FILE_PREFIX + ".real_index");
+	sch >> n;
+	for (int i = 0; i < n; i++) {
+		sch >> name;
+		schema_set.insert(name);
+	}
+	ind >> n;
+	for (int i = 0; i < n; i++) {
+		ind >> name;
+		index_set.insert(name);
+	}
+	sch.close();
+	ind.close();
 }
 
 BufferPool::~BufferPool() {
@@ -49,6 +65,18 @@ BufferPool::~BufferPool() {
 		free_stream.close();
 	}
 	catalog_stream.close();
+	ofstream sch(FILE_PREFIX + ".real_schema");
+	ofstream ind(FILE_PREFIX + ".real_index");
+	sch << schema_set.size() << endl;
+	for (auto i : schema_set) {
+		sch << i << endl;
+	}
+	sch.close();
+	ind << index_set.size() << endl;
+	for (auto i : index_set) {
+		ind << i << endl;
+	}
+	ind.close();
 }
 
 
@@ -210,7 +238,9 @@ vector<Tuple> BufferPool::directFetch(const vector<TupleSpecifier>& src_specifie
 	for (auto i : src_specifiers) {
 		auto j = BlockSpecifier(i.file_name, i.page_number);
 		Block& temp =  (*this)[j];
-		ret.push_back(temp.tuple_list[i.tuple_number]);
+		if (temp.tuple_list[i.tuple_number].valid) {
+			ret.push_back(temp.tuple_list[i.tuple_number]);
+		}
 	}	
 	return ret;
 }

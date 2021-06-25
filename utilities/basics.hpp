@@ -14,6 +14,7 @@
 #include <sstream>
 #include <climits>
 #include <chrono>
+#include <unordered_set>
 #include "../exception/zhuaba_exceptions.hpp"
 using namespace std;
 
@@ -23,10 +24,10 @@ enum class Type {INT, DOUBLE, STRING};
 // Enumeration of condition operators
 enum class Operator {EQ, NE, LT, LE, GT, GE};
 
-const int BLOCK_SIZE = 4096;
+const int BLOCK_SIZE = 8192;
 const int MAX_CAPACITY = 1024;
-const int REAL_SIZE = 3072;
-const int BUFFER_CAPACITY = 10;
+const int REAL_SIZE = 8192-1024;
+const int BUFFER_CAPACITY = 1024;
 
 const string CATALOG_FILE = ".catalog";
 

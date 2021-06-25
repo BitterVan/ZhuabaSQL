@@ -163,5 +163,6 @@ void Tuple::makeInvalid() {
 
 bool Tuple::operator<(const Tuple& src_tuple) const {
 	auto first_attr_name = tuple_schema.fisrtAttribute();
-	return tuple_vals.find(first_attr_name)->second < src_tuple.tuple_vals.find(first_attr_name)->second;
+	auto ret = tuple_vals.find(first_attr_name)->second < src_tuple.tuple_vals.find(first_attr_name)->second;
+	return ret;
 }

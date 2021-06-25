@@ -9,6 +9,7 @@ CatalogManager::~CatalogManager() = default;
 
 void CatalogManager::createTable(const string& src_schema_name, const vector<string>& src_attr_names, const vector<Attribute>& src_attrs, const string& src_primary_key, const vector<string>& src_unique_name) {
 	buffer_pool.createSchema(Schema(src_schema_name, src_attr_names, src_attrs, src_primary_key, src_unique_name));
+	buffer_pool.schema_set.insert(src_schema_name);
 }
 
 void CatalogManager::dropTable(const string& src_schema_name) {
@@ -16,6 +17,7 @@ void CatalogManager::dropTable(const string& src_schema_name) {
 	for (auto i : temp)
 		buffer_pool.duplicant_map[src_schema_name + i].clear();
 	buffer_pool.dropSchema(src_schema_name);
+	buffer_pool.schema_set.erase(src_schema_name);
 }
 
 Type CatalogManager::fetchType(const string& src_schema_name, const string& src_attr_name) const {
