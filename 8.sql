@@ -20000,5 +20000,3 @@ insert into students values ('20119', '20119', 20006, 20006, '20119');
 insert into students values ('20120', '20120', 20007, 20007, '20120');
 insert into students values ('20121', '20121', 20008, 20008, '20121');
 insert into students values ('20122', '20122', 20009, 20009, '20122');
-insert into students values ('20123', '20123', 20010, 20010, '20123');
-insert into students values ('20124', '20124', 20011, 20011, '20124');

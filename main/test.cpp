@@ -16,7 +16,15 @@ int main() {
 	while (1) {
 		temp = api.fetchStatement();
 		auto begin = chrono::system_clock::now();
-		if (temp == "quit;") {
+		if (temp == "show table;") {
+			for (auto i : buffer.schema_set) {
+				cout << i << endl;
+			}
+		} else if (temp == "show index;") {
+			for (auto i : buffer.index_set) {
+				cout << i << " : " << index.index_map[i] << endl;
+			}
+		} else if (temp == "quit;") {
 			break;
 		} else if (temp.find("execfile") == temp.npos) {
 			try {

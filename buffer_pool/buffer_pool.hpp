@@ -28,4 +28,6 @@ class BufferPool {
 
 		unordered_map<string, list<int>> free_list;
 		unordered_map<string, unordered_map<Item, int>> duplicant_map;
+		unordered_set<string> schema_set;
+		unordered_set<string> index_set;
 };

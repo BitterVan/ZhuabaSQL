@@ -7,8 +7,9 @@ class IndexManager {
 		BufferPool& buffer_pool;
 		RecordManager& record_manager;
 		CatalogManager& catalog_manager;
-		map<string, string> index_map;
 		map<string, int> root_position;
+
+
 
 	public:
 		IndexManager(BufferPool&, CatalogManager&, RecordManager&);
@@ -18,4 +19,5 @@ class IndexManager {
 		void insertIndex(const string&, const string&, const Item&, const TupleSpecifier&);
 		vector<Tuple> selectTuple(const string&, const Requirement&);
 		void dropIndex(const string&);
+		map<string, string> index_map;
 };

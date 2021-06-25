@@ -52,3 +52,8 @@ class DuplicantUnique : public exception {
 		const char* what() const throw();
 };
 
+class IndexDisallowed : public exception {
+	public:
+		const char* what() const throw();
+};
+

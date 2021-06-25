@@ -15,6 +15,7 @@ buffer_pool(src_buffer_pool), catalog_manager(src_catalog_manager), record_manag
 		root_position.emplace(name, root_pos);
 	}	
 	temp.close();
+
 }
 
 IndexManager::~IndexManager() {
@@ -25,11 +26,13 @@ IndexManager::~IndexManager() {
 		temp << root_position.find(i.second)->second << endl;
 	}
 	temp.close();
+
 }
 
 void IndexManager::dropIndex(const string& src_index_name) {
 	catalog_manager.dropTable(index_map[src_index_name]);
 	index_map.erase(index_map.find(src_index_name));
+	buffer_pool.index_set.erase(src_index_name);
 }
 
 bool IndexManager::holdIndex(const string& src_schema_name, const string& src_attr_name) const {
@@ -42,6 +45,10 @@ bool IndexManager::holdIndex(const string& src_schema_name, const string& src_at
 }
 
 void IndexManager::createIndex(const string& src_schema_name, const string& src_index_name, const string& src_attr_name) {
+	auto unique_list = buffer_pool[src_schema_name].uniqueList();
+	if (find(unique_list.begin(), unique_list.end(), src_attr_name) == unique_list.end()) {
+		throw IndexDisallowed();
+	}
 	string real_name = src_schema_name + src_attr_name;
 	buffer_pool.fetchType(src_schema_name, src_attr_name);
 	index_map[src_index_name] = real_name;
@@ -94,6 +101,8 @@ void IndexManager::createIndex(const string& src_schema_name, const string& src_
 	for (auto i = tuples.begin(); i != tuples.end(); i++) {
 		insertIndex(src_schema_name, src_attr_name, i->valueList(sub_name_list)[0], spec_list[i-tuples.begin()]);
 	}	
+	buffer_pool.index_set.insert(src_index_name);
+	buffer_pool.schema_set.erase(real_name);
 }
 
 void IndexManager::insertIndex(const string& src_schema_name, const string& src_attr_name, const Item& src_item, const TupleSpecifier& src_specifier) {
@@ -160,7 +169,7 @@ vector<Tuple> IndexManager::selectTuple(const string& src_schema_name, const Req
 		attr.push_back("tuple_number");
 		for (auto i = now->tuple_list.begin() + 2; i != now->tuple_list.end(); i++) {
 			auto temp = i->valueList(attr);
-			spec_list.emplace_back(temp[0].toString(), str2int(temp[1].toString()), str2int(temp[2].toString()));
+			spec_list.emplace_back(str2str(temp[0].toString()), str2int(temp[1].toString()), str2int(temp[2].toString()));
 		}
 		auto temp = buffer_pool.directFetch(spec_list);
 		vector<Tuple> ttmp;
@@ -173,6 +182,7 @@ vector<Tuple> IndexManager::selectTuple(const string& src_schema_name, const Req
 			break;
 		}
 		move(ttmp.begin(), ttmp.end(), back_inserter(ret));
+		now = &(buffer_pool[now->previousPosition()]);
 	}
 	return ret;
 }

@@ -12,7 +12,6 @@ class Tuple {
 		const Schema& tuple_schema;
 		unordered_map<string, Item> tuple_vals;
 		bool meet(const Requirement&) const;
-		char valid;
 
 	public:
 		Tuple(const Tuple&);
@@ -28,7 +27,8 @@ class Tuple {
 		void _debug_show_info() const;
 		bool _debug_hold_illegal() const;
 		bool operator<(const Tuple&) const;
-		
+		char valid;
+
 		friend class Block;
 		friend class IndexManager;
 };

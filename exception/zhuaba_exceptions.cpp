@@ -10,11 +10,11 @@ const char* FileError::what() const throw() {
 }
 
 const char* SchemaError::what() const throw() {
-	return "Schema does not exist!";
+	return "Schema/Index does not exist!";
 }
 
 const char* SchemaDuplication::what() const throw() {
-	return "Schema already exist!";
+	return "Schema/Index already exist!";
 }
 
 const char* TupleInitialFail::what() const throw() {
@@ -39,4 +39,8 @@ const char* NoMatchingAttribute::what() const throw() {
 
 const char* DuplicantUnique::what() const throw() {
 	return "Duplicant unique values!";
+}
+
+const char* IndexDisallowed::what() const throw() {
+	return "Cannot create index on non-unique attribute!";
 }
