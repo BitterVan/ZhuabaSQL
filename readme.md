@@ -1,4 +1,4 @@
-# ZhuabaSQL
+# SimQLe
 
 This is a naive SQL for Database System course, ZJU.
 
