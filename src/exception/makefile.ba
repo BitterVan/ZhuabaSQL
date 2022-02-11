@@ -1,0 +1,12 @@
+objects := $(wildcard *.o)
+
+.PHONY: all
+all: $(objects)
+	echo "$<"
+
+$(objects): %.cpp
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $<
+
+.PHONY: all
+clean:
+	rm *.o

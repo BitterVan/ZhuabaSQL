@@ -7,3 +7,5 @@ Owned by BitterVan, Hu Xiaomeng, Wang Yiming and Yang Qisen.
 I finally finish writing this, but some bugs are remaining, including managing the B+ tree, and so on.
 
 Maybe I'll try rebuild this later.
+
+Feb 11, 2022. Start rebuilding.
